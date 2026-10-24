@@ -1,0 +1,34 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+.next-*/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# sanity
+.sanity/
+dist/
+
+# local data (PGlite database for development)
+.data/
+
+# env files (never commit secrets; .env.example is the template)
+.env
+.env.*
+!.env.example
+
+# testing and reports
+coverage/
+playwright-report/
+test-results/
+blob-report/
+reports/
+
+# deployment
+.vercel/
+
+# os
+.DS_Store

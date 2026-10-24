@@ -1,0 +1,431 @@
+@import 'tailwindcss';
+
+/*
+ * Oceania design tokens. The default Tailwind palette is cleared so only
+ * brand colours can be used. Every text and background pairing below was
+ * checked against WCAG 2.2 AA (see docs/handover/verification.md).
+ */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Greens */
+  --color-botanical-950: #0f1e17;
+  --color-forest-900: #152a20;
+  --color-forest-800: #1e3a2b;
+  --color-forest-700: #2b4c39;
+  --color-forest-600: #3d604a;
+  --color-moss-600: #5e6a4d;
+  --color-sage-400: #9da890;
+  --color-sage-300: #b4bda7;
+  --color-sage-200: #d3d9c8;
+
+  /* Paper */
+  --color-paper: #fbf9f4;
+  --color-ivory-50: #f7f3ea;
+  --color-ivory-100: #efe8da;
+  --color-sand-200: #e5dcc9;
+
+  /* Harvest gold. 500 is decorative only; 700 is for small text on light grounds. */
+  --color-gold-300: #e2c988;
+  --color-gold-400: #d4b062;
+  --color-gold-500: #b8913f;
+  --color-gold-700: #7a5c1c;
+
+  /* Ink and earth */
+  --color-ink-900: #1a1d18;
+  --color-ink-700: #3a3f36;
+  --color-ink-500: #5c6257;
+  --color-soil-600: #6b4f38;
+
+  /* States */
+  --color-error-700: #9b3424;
+  --color-error-100: #f6e3dc;
+
+  /*
+   * Arial throughout, at the client's request. It is installed on Windows, macOS
+   * and iOS; Android shows its own standard sans (Roboto). Nothing is downloaded.
+   */
+  --font-display: Arial, Helvetica, sans-serif;
+  --font-sans: Arial, Helvetica, sans-serif;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root {
+  --gutter: clamp(1.25rem, 0.167rem + 4.815vw, 4.5rem);
+  --max-width: 90rem;
+  --column-gap: clamp(1rem, 0.5rem + 1.5vw, 2rem);
+  --section-space: clamp(4.5rem, 3rem + 6.5vw, 10rem);
+  --header-height: 4rem;
+  --line: rgb(26 29 24 / 0.14);
+  --line-strong: rgb(26 29 24 / 0.3);
+  --line-on-dark: rgb(247 243 234 / 0.18);
+  /* Form field outlines: at least 3:1 against every surface a form sits on (WCAG 1.4.11). */
+  --line-control: rgb(26 29 24 / 0.55);
+  --line-control-on-dark: rgb(247 243 234 / 0.45);
+  --duration-fast: 160ms;
+  --duration-base: 280ms;
+  --duration-reveal: 720ms;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --header-height: 4.5rem;
+  }
+}
+
+@layer base {
+  html {
+    background-color: var(--color-ivory-50);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--header-height) + 1.5rem);
+  }
+
+  body {
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+  }
+
+  @media (min-width: 64rem) {
+    body {
+      font-size: 1.125rem;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd,
+  figcaption {
+    text-wrap: pretty;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-300);
+    color: var(--color-ink-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-700);
+    outline-offset: 3px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--color-gold-300);
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+/* Layout */
+
+@utility container-site {
+  width: 100%;
+  max-width: calc(var(--max-width) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+@utility grid-site {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--column-gap);
+}
+
+@utility section-space {
+  padding-block: var(--section-space);
+}
+
+/*
+ * Below-the-fold sections: the browser skips their style, layout and paint until
+ * they near the viewport, so the first frame and the hero photograph arrive sooner.
+ * The height is a placeholder; once a section has rendered, its real height is kept.
+ */
+@utility render-later {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+@utility rule {
+  border-top: 1px solid var(--line);
+}
+
+@utility rule-strong {
+  border-top: 1px solid var(--line-strong);
+}
+
+@utility rule-on-dark {
+  border-top: 1px solid var(--line-on-dark);
+}
+
+/* Type scale: fluid between 360px and 1440px viewports. */
+
+/* Arial has regular and bold only: headings are bold, with tighter spacing as they grow. */
+
+@utility type-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.375rem, 1.417rem + 4.26vw, 5.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.032em;
+}
+
+@utility type-h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.125rem, 1.458rem + 2.96vw, 4.125rem);
+  line-height: 1.07;
+  letter-spacing: -0.028em;
+}
+
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 1.375rem + 1.67vw, 2.875rem);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+}
+
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 1.125rem + 0.56vw, 1.625rem);
+  line-height: 1.25;
+  letter-spacing: -0.012em;
+}
+
+@utility type-h4 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+@utility type-lead {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(1.125rem, 1.042rem + 0.37vw, 1.375rem);
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+@utility type-body-lg {
+  font-size: 1.125rem;
+  line-height: 1.6;
+
+  @media (min-width: 64rem) {
+    font-size: 1.1875rem;
+  }
+}
+
+@utility type-small {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+@utility type-caption {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  letter-spacing: 0.004em;
+}
+
+@utility type-label {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+@utility type-numeral {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Links: a drawn underline that is always visible as a resting hairline. */
+
+@utility link-draw {
+  background-image: linear-gradient(currentColor, currentColor), linear-gradient(var(--line-strong), var(--line-strong));
+  background-size: 0% 1px, 100% 1px;
+  background-position: 0 100%, 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size var(--duration-base) var(--ease-out);
+
+  &:hover,
+  &:focus-visible,
+  &[aria-current='page'] {
+    background-size: 100% 1px, 100% 1px;
+  }
+}
+
+/* Navigation: no resting line, drawn on hover and for the current page. */
+@utility link-quiet {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size var(--duration-base) var(--ease-out);
+
+  &:hover,
+  &:focus-visible,
+  &[aria-current='page'] {
+    background-size: 100% 1px;
+  }
+}
+
+@utility link-inline {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  transition: text-decoration-color var(--duration-fast) ease;
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* Arrow nudge for links and buttons that contain an .arrow-icon */
+.has-arrow .arrow-icon {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.has-arrow:hover .arrow-icon,
+.has-arrow:focus-visible .arrow-icon {
+  transform: translateX(4px);
+}
+
+/* Reveal on scroll (one shared observer). Content stays visible without JS. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .js-reveal [data-reveal] {
+    transition:
+      opacity var(--duration-reveal) var(--ease-out),
+      transform var(--duration-reveal) var(--ease-out),
+      clip-path calc(var(--duration-reveal) + 200ms) var(--ease-out);
+    transition-delay: calc(var(--reveal-index, 0) * 90ms);
+  }
+
+  .js-reveal [data-reveal='rise']:not([data-revealed]) {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+
+  .js-reveal [data-reveal='mask']:not([data-revealed]) {
+    clip-path: inset(7% 0 0 0);
+  }
+
+  .js-reveal [data-reveal='mask'] img {
+    transition: transform calc(var(--duration-reveal) + 500ms) var(--ease-out);
+  }
+
+  .js-reveal [data-reveal='mask']:not([data-revealed]) img {
+    transform: scale(1.045);
+  }
+
+  /* Hero headline: transform only, so the largest paint is never delayed. */
+  .hero-line {
+    display: inline-block;
+    animation: hero-rise 1000ms var(--ease-out) both;
+    animation-delay: calc(var(--line-index, 0) * 110ms);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    transform: translate3d(0, 0.28em, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Native dialogs: solid scrim, no blur. */
+
+dialog::backdrop {
+  background-color: rgb(15 30 23 / 0.78);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog[data-animate] {
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      transform var(--duration-base) var(--ease-out),
+      overlay var(--duration-base) allow-discrete,
+      display var(--duration-base) allow-discrete;
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+
+  dialog[data-animate][open] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @starting-style {
+    dialog[data-animate][open] {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+    }
+  }
+
+  dialog[data-animate]::backdrop {
+    transition:
+      background-color var(--duration-base) ease,
+      overlay var(--duration-base) allow-discrete,
+      display var(--duration-base) allow-discrete;
+  }
+
+  @starting-style {
+    dialog[data-animate][open]::backdrop {
+      background-color: rgb(15 30 23 / 0);
+    }
+  }
+}
+
+html:has(dialog[open][data-lock-scroll]) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

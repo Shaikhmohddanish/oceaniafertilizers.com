@@ -1,0 +1,60 @@
+{
+  "name": "oceania-fertilizers-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website for Oceania Fertilizers: brand, product information and lead generation.",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "check:ascii": "node scripts/check-ascii.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx scripts/db-migrate.ts",
+    "sanity:seed": "node --import ./scripts/lib/register-assets.mjs --import tsx scripts/seed-sanity.ts",
+    "perf": "node scripts/lighthouse.mjs",
+    "verify": "npm run check:ascii && npm run lint && npm run typecheck && npm run test && npm run build"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.11",
+    "@neondatabase/serverless": "^1.2.0",
+    "@portabletext/react": "^7.0.1",
+    "@sanity/client": "^7.28.0",
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/orderable-document-list": "^2.0.28",
+    "drizzle-orm": "^0.45.4",
+    "next": "^16.4.3",
+    "next-sanity": "^13.4.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "resend": "^6.34.1",
+    "sanity": "^6.20.0",
+    "server-only": "^0.0.1",
+    "styled-components": "^6.6.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.3",
+    "lexorank": "^1.0.5",
+    "postcss": "^8.5.31",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.5"
+  }
+}
