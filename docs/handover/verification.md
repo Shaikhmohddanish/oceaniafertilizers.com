@@ -6,7 +6,7 @@ What was tested, how, and the results, recorded on 25 October 2026 against the c
 
 | Check | Command | Result |
 | --- | --- | --- |
-| ASCII only | `npm run check:ascii` | Passed (242 files) |
+| ASCII only | `npm run check:ascii` | Passed (239 files) |
 | Lint | `npm run lint` | No errors or warnings |
 | Types | `npm run typecheck` | No errors |
 | Unit tests | `npm test` | 56 passed, in 5 files |
@@ -82,22 +82,22 @@ Measured locally on a production build (`NEXT_PUBLIC_SITE_ENV=production`, bundl
 
 | Page | Preset | Performance | Accessibility | Best practices | SEO | LCP | CLS | TBT |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `/` | Mobile | 96 | 100 | 100 | 100 | 2.7 s | 0 | 90 ms |
-| `/products` | Mobile | 96 | 100 | 100 | 100 | 2.7 s | 0 | 60 ms |
-| `/products/halad-special` | Mobile | 95 | 100 | 100 | 100 | 2.9 s | 0 | 50 ms |
-| `/insights` | Mobile | 95 | 100 | 100 | 100 | 2.9 s | 0 | 60 ms |
-| `/become-a-partner` | Mobile | 96 | 100 | 100 | 100 | 2.7 s | 0 | 100 ms |
-| `/` | Desktop | 100 | 100 | 100 | 100 | 0.8 s | 0 | 0 ms |
-| `/products` | Desktop | 100 | 100 | 100 | 100 | 0.8 s | 0 | 0 ms |
-| `/products/halad-special` | Desktop | 100 | 100 | 100 | 100 | 0.6 s | 0 | 0 ms |
-| `/insights` | Desktop | 100 | 100 | 100 | 100 | 0.6 s | 0 | 0 ms |
+| `/` | Mobile | 98 | 100 | 100 | 100 | 2.4 s | 0 | 60 ms |
+| `/products` | Mobile | 97 | 100 | 100 | 100 | 2.6 s | 0 | 50 ms |
+| `/products/halad-special` | Mobile | 97 | 100 | 100 | 100 | 2.6 s | 0 | 50 ms |
+| `/insights` | Mobile | 97 | 100 | 100 | 100 | 2.4 s | 0 | 120 ms |
+| `/become-a-partner` | Mobile | 99 | 100 | 100 | 100 | 2.1 s | 0 | 60 ms |
+| `/` | Desktop | 100 | 100 | 100 | 100 | 0.7 s | 0 | 0 ms |
+| `/products` | Desktop | 100 | 100 | 100 | 100 | 0.7 s | 0 | 0 ms |
+| `/products/halad-special` | Desktop | 100 | 100 | 100 | 100 | 0.5 s | 0 | 0 ms |
+| `/insights` | Desktop | 100 | 100 | 100 | 100 | 0.4 s | 0 | 0 ms |
 | `/become-a-partner` | Desktop | 100 | 100 | 100 | 100 | 0.6 s | 0 | 0 ms |
 
-**Against the targets:** performance 90+ and accessibility, best practices and SEO 95+ are met on every page. CLS is 0, under the 0.1 target. TBT is 50 to 100 ms, which suggests interaction delay well under 200 ms; INP itself needs real users to measure. **The 2.5 second LCP target is met on desktop but not in the mobile lab run, at 2.7 to 2.9 seconds.**
+**Against the targets:** performance 90+ and accessibility, best practices and SEO 95+ are met on every page. CLS is 0, under the 0.1 target. TBT is 50 to 120 ms, which suggests interaction delay well under 200 ms; INP itself needs real users to measure. **The 2.5 second LCP target is met on desktop and on three of the five pages on mobile; the product list and the product page measure 2.6 seconds on mobile.**
 
 About the mobile LCP figure:
 
-- In the unthrottled trace, the largest element, the hero photograph, appears at about 0.1 seconds. The 2.7 to 2.9 second figure is Lighthouse's model of a slow phone, and it counts all JavaScript that finished downloading before that first frame.
+- In the unthrottled trace, the largest element, the hero photograph, appears at about 0.1 seconds. The 2.1 to 2.6 second figures are Lighthouse's model of a slow phone, and it counts all JavaScript that finished downloading before that first frame.
 - About 130 KB (compressed) of that JavaScript is React and the Next.js router, which every page of this kind loads.
 - Repeated runs vary by about 0.4 seconds, depending on whether the scripts happen to finish before the first frame.
 
