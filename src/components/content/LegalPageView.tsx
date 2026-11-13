@@ -35,15 +35,15 @@ export function LegalPageView({ page }: { page: LegalPage }) {
   const parts = sections(page.body);
 
   return (
-    <div className="bg-ivory-50 pt-8 pb-[var(--section-space)] lg:pt-12">
+    <div className="bg-paper pt-8 pb-[var(--section-space)] lg:pt-12">
       <div className="container-site">
         <Breadcrumbs items={[{ label: page.title, href: `/${page.slug}` }]} />
         <div className="mt-10 max-w-[48rem] lg:mt-14">
-          <h1 className="type-h1 text-forest-900">{page.title}</h1>
+          <h1 className="type-h1 text-pine-700">{page.title}</h1>
           <p className="type-lead mt-6 text-ink-700">{page.summary}</p>
           <p className="type-small mt-6 text-ink-500">Last updated {formatDate(page.lastUpdated)}</p>
           {!page.approved ? (
-            <p role="note" className="type-small mt-6 border-l-2 border-gold-500 bg-ivory-100 px-5 py-4 text-ink-700">
+            <p role="note" className="type-small mt-6 border-l-2 border-clay-600 bg-paper-deep px-5 py-4 text-ink-700">
               <span className="font-semibold text-ink-900">Draft pending legal review.</span> This text describes how the
               website works and is being reviewed before it becomes final.
             </p>
@@ -71,7 +71,7 @@ export function LegalPageView({ page }: { page: LegalPage }) {
             {parts.map((part, index) => (
               <section key={part.id ?? `intro-${index}`} aria-labelledby={part.id} className="mt-12 first:mt-0">
                 {part.heading ? (
-                  <h2 id={part.id} className="type-h3 scroll-mt-28 text-forest-900">
+                  <h2 id={part.id} className="type-h3 scroll-mt-28 text-pine-700">
                     {part.heading}
                   </h2>
                 ) : null}

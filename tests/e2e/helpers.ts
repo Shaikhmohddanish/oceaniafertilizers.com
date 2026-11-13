@@ -1,14 +1,16 @@
 import type { Page } from '@playwright/test';
 
-/** Every public route, as published in production. */
+/** Every public route, as published in production (plus the fixture farmer video). */
 export const ROUTES = [
   '/',
+  '/learn',
+  '/learn/videos/test-fixture-video',
+  '/advice',
   '/products',
   '/products/halad-special',
   '/products/waves-mycorrhizal-biofertilizer',
-  '/demo-plots',
+  '/field-visits',
   '/farmer-stories',
-  '/insights',
   '/about',
   '/gallery',
   '/become-a-partner',

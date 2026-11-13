@@ -7,7 +7,7 @@ import { promisify } from 'node:util';
 
 const run = promisify(execFile);
 const base = process.env.BASE_URL ?? 'http://localhost:3100';
-const pages = (process.env.PAGES ?? '/,/products,/products/halad-special,/insights,/become-a-partner').split(',');
+const pages = (process.env.PAGES ?? '/,/products,/products/halad-special,/learn,/advice').split(',');
 const presets = (process.env.PRESETS ?? 'mobile,desktop').split(',');
 const outDir = 'reports/lighthouse';
 

@@ -9,9 +9,9 @@ export function FaqList({ faqs }: { faqs: Faq[] }) {
     <div className="border-t border-[color:var(--line-strong)]">
       {faqs.map((faq) => (
         <details key={faq.id} className="group border-b border-[color:var(--line-strong)]">
-          <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-4 font-display text-[1.1875rem] font-bold text-forest-900 [&::-webkit-details-marker]:hidden">
+          <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-6 py-4 font-display text-[1.1875rem] font-bold text-pine-700 [&::-webkit-details-marker]:hidden">
             {faq.question}
-            <span aria-hidden="true" className="shrink-0 text-2xl leading-none text-gold-700 transition-transform group-open:rotate-45">
+            <span aria-hidden="true" className="shrink-0 text-2xl leading-none text-clay-700 transition-transform group-open:rotate-45">
               +
             </span>
           </summary>

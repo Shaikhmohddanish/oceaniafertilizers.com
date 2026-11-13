@@ -120,6 +120,13 @@ export const siteSettings = defineType({
       ],
     }),
     defineField({ name: 'whatsappChannelUrl', title: 'WhatsApp channel link', type: 'url', group: 'social' }),
+    defineField({
+      name: 'adviceLanguages',
+      title: 'Languages we advise in',
+      type: 'string',
+      group: 'contact',
+      description: 'For example "English and Marathi". Shown next to the advice and contact options.',
+    }),
   ],
   preview: { prepare: () => ({ title: 'Site settings' }) },
 });
@@ -130,7 +137,6 @@ export const homePage = defineType({
   type: 'document',
   groups: [
     { name: 'hero', title: 'Opening', default: true },
-    { name: 'story', title: 'Story' },
     { name: 'sections', title: 'Sections' },
     { name: 'seo', title: 'Search' },
   ],
@@ -141,42 +147,20 @@ export const homePage = defineType({
       type: 'object',
       group: 'hero',
       fields: [
-        defineField({ name: 'eyebrow', title: 'Small line above the headline', type: 'string' }),
         headline(),
-        text('standfirst', 'Introduction'),
+        text('standfirst', 'One short promise', 2),
         image('image', 'Photograph'),
-        defineField({
-          name: 'backdrop',
-          title: 'Sky colour',
-          type: 'string',
-          description: 'Hex colour matching the top edge of the photograph, so the headline sits in the sky. For example #EEF5F6.',
-          validation: (rule) => rule.regex(/^#[0-9a-fA-F]{6}$/, { name: 'hex colour' }),
-        }),
         defineField({ name: 'primaryCta', title: 'Main button', type: 'cta', validation: (rule) => rule.required() }),
         defineField({ name: 'secondaryCta', title: 'Second link', type: 'cta', validation: (rule) => rule.required() }),
       ],
     }),
     defineField({
-      name: 'pillars',
-      title: 'Three statements',
-      type: 'array',
-      group: 'hero',
-      of: [defineArrayMember({ type: 'string' })],
-      validation: (rule) => rule.max(3),
-    }),
-    defineField({
-      name: 'chapters',
-      title: 'Story chapters',
-      type: 'array',
-      group: 'story',
-      validation: (rule) => rule.max(3),
-      of: [
-        defineArrayMember({
-          type: 'object',
-          fields: [line('label', 'Label'), headline('title', 'Title'), text('body', 'Text', 4), image('image', 'Photograph')],
-          preview: { select: { title: 'label', subtitle: 'title', media: 'image' } },
-        }),
-      ],
+      name: 'learn',
+      title: 'Learn farming together',
+      type: 'object',
+      group: 'sections',
+      description: 'Heading for the farmer videos, practices and articles.',
+      fields: [headline(), text('intro', 'Introduction', 2)],
     }),
     defineField({
       name: 'products',
@@ -208,15 +192,10 @@ export const homePage = defineType({
         image('image', 'Photograph'),
         defineField({
           name: 'points',
-          title: 'Head to feet',
+          title: 'Three points',
           type: 'array',
-          of: [
-            defineArrayMember({
-              type: 'object',
-              fields: [line('part', 'Part, for example "Hands"'), line('meaning', 'Meaning, for example "for getting things done"')],
-              preview: { select: { title: 'part', subtitle: 'meaning' } },
-            }),
-          ],
+          of: [defineArrayMember({ type: 'titledText' })],
+          validation: (rule) => rule.max(3),
         }),
         defineField({ name: 'cta', title: 'Button', type: 'cta' }),
       ],
@@ -235,13 +214,6 @@ export const homePage = defineType({
         defineField({ name: 'topics', title: 'Practices', type: 'array', of: [defineArrayMember({ type: 'titledText' })] }),
       ],
     }),
-    defineField({
-      name: 'partner',
-      title: 'Partner invitation',
-      type: 'object',
-      group: 'sections',
-      fields: [line('eyebrow', 'Label'), headline(), text('body', 'Text'), image('image', 'Photograph'), defineField({ name: 'cta', title: 'Button', type: 'cta' })],
-    }),
     defineField({ name: 'contact', title: 'Contact invitation', type: 'object', group: 'sections', fields: [line('eyebrow', 'Label'), headline(), text('body', 'Text')] }),
     defineField({ name: 'seo', title: 'Search and sharing', type: 'seo', group: 'seo' }),
   ],
@@ -259,7 +231,16 @@ export const aboutPage = defineType({
       type: 'object',
       fields: [headline(), text('standfirst', 'Introduction'), image('image', 'Photograph')],
     }),
-    defineField({ name: 'purpose', title: 'Purpose', type: 'object', fields: [line('headline', 'Heading'), defineField({ name: 'body', title: 'Text', type: 'simpleText' })] }),
+    defineField({
+      name: 'purpose',
+      title: 'Purpose',
+      type: 'object',
+      fields: [
+        line('headline', 'Heading'),
+        defineField({ name: 'body', title: 'Text', type: 'simpleText' }),
+        defineField({ name: 'statements', title: 'Three statements', type: 'array', of: [defineArrayMember({ type: 'string' })], validation: (rule) => rule.max(3) }),
+      ],
+    }),
     defineField({
       name: 'approach',
       title: 'Approach',
@@ -359,10 +340,11 @@ export const partnerProgramme = defineType({
 
 export const PAGE_INTRO_KEYS = [
   { title: 'Products', value: 'products' },
-  { title: 'Field results', value: 'demoPlots' },
+  { title: 'Field visits', value: 'fieldVisits' },
   { title: 'Farmer stories', value: 'farmerStories' },
   { title: 'Gallery', value: 'gallery' },
-  { title: 'Insights', value: 'insights' },
+  { title: 'Learn', value: 'learn' },
+  { title: 'Get crop advice', value: 'advice' },
   { title: 'Contact', value: 'contact' },
   { title: 'Join Oceania', value: 'join' },
 ];

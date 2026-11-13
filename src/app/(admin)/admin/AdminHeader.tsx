@@ -10,7 +10,7 @@ const sections = [
 
 export function AdminHeader({ current = 'Leads' }: { current?: 'Leads' | 'Newsletter' }) {
   return (
-    <header className="border-b border-[color:var(--line)] bg-ivory-50">
+    <header className="border-b border-[color:var(--line)] bg-paper">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-6">
         <div className="flex items-center gap-8">
           <Link href="/admin/leads">
@@ -23,7 +23,7 @@ export function AdminHeader({ current = 'Leads' }: { current?: 'Leads' | 'Newsle
                 key={section.href}
                 href={section.href}
                 aria-current={section.label === current ? 'page' : undefined}
-                className="type-small inline-flex min-h-6 items-center font-medium text-ink-700 underline-offset-4 hover:underline aria-[current=page]:text-forest-900 aria-[current=page]:underline"
+                className="type-small inline-flex min-h-6 items-center font-medium text-ink-700 underline-offset-4 hover:underline aria-[current=page]:text-pine-700 aria-[current=page]:underline"
               >
                 {section.label}
               </Link>
@@ -31,7 +31,7 @@ export function AdminHeader({ current = 'Leads' }: { current?: 'Leads' | 'Newsle
           </nav>
         </div>
         <form action={logout}>
-          <button type="submit" className="type-small font-medium text-forest-800 underline-offset-4 hover:underline">
+          <button type="submit" className="type-small font-medium text-pine-700 underline-offset-4 hover:underline">
             Sign out
           </button>
         </form>

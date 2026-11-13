@@ -2,19 +2,15 @@
 
 import { useRef, useState } from 'react';
 
-import { CloseIcon, PlayIcon } from '@/components/brand/icons';
+import { CloseIcon } from '@/components/brand/icons';
+import { OPlay } from '@/components/brand/OFrame';
 import { RichText } from '@/components/content/RichText';
 import { Picture } from '@/components/media/Picture';
 import { PendingTag } from '@/components/ui/PendingTag';
 import type { Testimonial } from '@/content/types';
 import { track } from '@/lib/analytics';
 import { formatDuration } from '@/lib/format';
-
-function embedSrc(video: Testimonial['video']) {
-  return video.provider === 'youtube'
-    ? `https://www.youtube-nocookie.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&cc_load_policy=1`
-    : `https://player.vimeo.com/video/${video.id}?autoplay=1&dnt=1`;
-}
+import { embedSrc, videoPoster } from '@/lib/video';
 
 /**
  * A farmer's story: poster, quote and attribution. The player is created only
@@ -26,16 +22,7 @@ export function VideoStory({ story, size = 'default' }: { story: Testimonial; si
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const place = [story.district, story.state].filter(Boolean).join(', ');
-  const poster =
-    story.poster ??
-    (story.video.provider === 'youtube'
-      ? {
-          src: `https://i.ytimg.com/vi/${story.video.id}/hqdefault.jpg`,
-          width: 480,
-          height: 360,
-          alt: '',
-        }
-      : undefined);
+  const poster = videoPoster(story.video, story.poster);
 
   function play() {
     setOpen(true);
@@ -53,7 +40,7 @@ export function VideoStory({ story, size = 'default' }: { story: Testimonial; si
         ref={triggerRef}
         type="button"
         onClick={play}
-        className="relative block w-full overflow-hidden bg-forest-900 text-left"
+        className="relative block w-full overflow-hidden bg-pine-700 text-left"
         style={{ aspectRatio: size === 'feature' ? '16 / 9' : '4 / 3' }}
         aria-label={`Play video: ${story.farmerName}${place ? `, ${place}` : ''}${story.video.durationSeconds ? `, ${formatDuration(story.video.durationSeconds)}` : ''}`}
       >
@@ -67,11 +54,9 @@ export function VideoStory({ story, size = 'default' }: { story: Testimonial; si
           />
         ) : null}
         <span className="absolute bottom-4 left-4 flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-ivory-50 text-forest-900 transition-transform duration-300 group-hover:scale-105">
-            <PlayIcon />
-          </span>
+          <OPlay />
           {story.video.durationSeconds ? (
-            <span className="type-numeral type-caption bg-botanical-950/85 px-2 py-1 text-ivory-50">
+            <span className="type-numeral type-caption bg-pine-900/85 px-2 py-1 text-paper">
               {formatDuration(story.video.durationSeconds)}
             </span>
           ) : null}
@@ -80,10 +65,10 @@ export function VideoStory({ story, size = 'default' }: { story: Testimonial; si
 
       <div className="mt-5">
         <div className="flex items-center gap-3">
-          {story.crop ? <p className="type-label text-gold-700">{story.crop.title}</p> : null}
+          {story.crop ? <p className="type-label text-clay-700">{story.crop.title}</p> : null}
           <PendingTag status={story.status} />
         </div>
-        <blockquote className={`mt-3 font-display text-forest-900 ${size === 'feature' ? 'type-h3' : 'text-[1.3125rem] leading-snug'}`}>
+        <blockquote className={`mt-3 font-display text-pine-700 ${size === 'feature' ? 'type-h3' : 'text-[1.3125rem] leading-snug'}`}>
           &quot;{story.quote}&quot;
         </blockquote>
         <p className="type-small mt-4 text-ink-700">
@@ -105,7 +90,7 @@ export function VideoStory({ story, size = 'default' }: { story: Testimonial; si
         onClick={(event) => {
           if (event.target === event.currentTarget) close();
         }}
-        className="m-auto w-[min(64rem,calc(100vw-2rem))] max-w-none bg-botanical-950 p-0 text-ivory-50"
+        className="m-auto w-[min(64rem,calc(100vw-2rem))] max-w-none bg-pine-900 p-0 text-paper"
       >
         <div className="flex items-center justify-between gap-4 px-5 py-3">
           <p className="type-small truncate">
@@ -141,7 +126,7 @@ export function VideoStory({ story, size = 'default' }: { story: Testimonial; si
                 +
               </span>
             </summary>
-            <RichText value={story.transcript} className="type-small max-h-64 overflow-y-auto pb-5 text-sage-200" />
+            <RichText value={story.transcript} className="type-small max-h-64 overflow-y-auto pb-5 text-pine-100" />
           </details>
         ) : null}
       </dialog>

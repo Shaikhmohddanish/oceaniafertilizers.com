@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowRightIcon, CloseIcon, MenuIcon } from '@/components/brand/icons';
 import { Wordmark } from '@/components/brand/Wordmark';
 import { ButtonLink } from '@/components/ui/Button';
-import { contactLink, mobileNav, partnerLink, primaryNav } from '@/lib/site';
+import { adviceLink, mobileNav, primaryNav } from '@/lib/site';
 
 function isCurrent(pathname: string, href: string) {
   return href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
@@ -42,7 +42,7 @@ export function SiteHeader() {
       <span ref={sentinelRef} aria-hidden="true" className="absolute top-0 left-0 h-px w-px" />
       <header
         data-scrolled={scrolled ? '' : undefined}
-        className="sticky top-0 z-40 border-b border-transparent bg-transparent transition-[background-color,border-color] duration-300 data-scrolled:border-[color:var(--line)] data-scrolled:bg-ivory-50"
+        className="sticky top-0 z-40 border-b border-transparent bg-transparent transition-[background-color,border-color] duration-300 data-scrolled:border-[color:var(--line)] data-scrolled:bg-paper"
       >
         <div className="container-site flex h-[var(--header-height)] items-center justify-between gap-6">
           <Link href="/" className="-my-2 py-2">
@@ -70,11 +70,8 @@ export function SiteHeader() {
           </nav>
 
           <div className="hidden items-center gap-6 lg:flex">
-            <Link href={partnerLink.href} className="link-quiet text-[0.9375rem] font-medium text-forest-800">
-              {partnerLink.label}
-            </Link>
-            <ButtonLink href={contactLink.href} size="sm">
-              {contactLink.label}
+            <ButtonLink href={adviceLink.href} size="sm">
+              {adviceLink.label}
             </ButtonLink>
           </div>
 
@@ -99,7 +96,7 @@ export function SiteHeader() {
         data-animate=""
         data-lock-scroll=""
         onClose={() => menuButtonRef.current?.focus()}
-        className="on-dark m-0 h-dvh max-h-none w-full max-w-none bg-botanical-950 p-0 text-ivory-50 backdrop:bg-transparent lg:hidden"
+        className="on-dark m-0 h-dvh max-h-none w-full max-w-none bg-pine-900 p-0 text-paper backdrop:bg-transparent lg:hidden"
       >
         <div className="flex min-h-full flex-col">
           <div className="container-site flex h-[var(--header-height)] shrink-0 items-center justify-between">
@@ -132,10 +129,10 @@ export function SiteHeader() {
                       <span>
                         <span className="block font-display text-[1.75rem] leading-tight font-bold">{item.label}</span>
                         {item.description ? (
-                          <span className="type-caption mt-1 block text-sage-300">{item.description}</span>
+                          <span className="type-caption mt-1 block text-pine-200">{item.description}</span>
                         ) : null}
                       </span>
-                      <ArrowRightIcon className="text-gold-300 transition-transform duration-300 group-hover:translate-x-1" />
+                      <ArrowRightIcon className="text-clay-300 transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>
                   </li>
                 );

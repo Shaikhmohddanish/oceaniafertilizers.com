@@ -9,9 +9,11 @@ import type { SiteSettings } from '../types';
 export const siteSettings: SiteSettings = {
   siteName: 'Oceania Fertilizers',
   shortName: 'Oceania',
-  tagline: "Let's understand farming",
+  tagline: "Let's understand farming together", // client, 7 November 2026
   description:
     'Oceania Fertilizers develops agricultural inputs for farms across India and helps farmers make better decisions about using them.',
   contact: {},
   social: [],
+  // From the founder brief in the brand and mobile proposal; to be confirmed.
+  adviceLanguages: 'English and Marathi',
 };

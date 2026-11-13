@@ -4,25 +4,29 @@ import { Eyebrow } from '@/components/ui/Eyebrow';
 import { Lines } from '@/components/ui/Lines';
 import type { HomePage, Product } from '@/content/types';
 
-/** Up to four featured products. Two published products read as a diptych. */
+/**
+ * Up to four featured products. Two published products read as a diptych.
+ * Not deferred (render-later): with several products it runs taller than the
+ * placeholder, and the section after it can be dark.
+ */
 export function FeaturedProducts({ section, products }: { section: HomePage['products']; products: Product[] }) {
   if (products.length === 0) return null;
   const columns = products.length >= 3 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-2';
   const sizes = products.length >= 3 ? '(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw' : '(min-width: 640px) 45vw, 100vw';
 
   return (
-    <section aria-labelledby="featured-products-title" className="section-space render-later bg-ivory-100">
+    <section aria-labelledby="featured-products-title" className="section-space bg-paper-deep">
       <div className="container-site">
         <div className="grid-site items-end gap-y-6">
           <div className="col-span-12 lg:col-span-7" data-reveal="rise">
             <Eyebrow>{section.eyebrow}</Eyebrow>
-            <h2 id="featured-products-title" className="type-h1 mt-6 text-forest-900">
+            <h2 id="featured-products-title" className="type-h1 mt-6 text-pine-700">
               <Lines text={section.headline} />
             </h2>
           </div>
           <div className="col-span-12 lg:col-span-4 lg:col-start-9" data-reveal="rise">
             <p className="text-ink-700">{section.intro}</p>
-            <TextLink href="/products" className="mt-5 text-forest-800">
+            <TextLink href="/products" className="mt-5 text-pine-700">
               View all products
             </TextLink>
           </div>
@@ -30,7 +34,7 @@ export function FeaturedProducts({ section, products }: { section: HomePage['pro
 
         <div className={`mt-14 grid gap-x-[var(--column-gap)] gap-y-14 lg:mt-20 ${columns}`}>
           {products.map((product, index) => (
-            <ProductCard key={product.id} product={product} sizes={sizes} revealIndex={index} />
+            <ProductCard key={product.id} product={product} sizes={sizes} revealIndex={index} showOrder />
           ))}
         </div>
       </div>

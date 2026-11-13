@@ -1,4 +1,4 @@
-import type { DemoPlot, GalleryItem, Testimonial } from '../types';
+import type { DemoPlot, FarmingVideo, GalleryItem, Testimonial } from '../types';
 
 /*
  * Farmer stories, demo plots and the gallery start empty on purpose.
@@ -8,3 +8,6 @@ import type { DemoPlot, GalleryItem, Testimonial } from '../types';
 export const testimonials: Testimonial[] = [];
 export const demoPlots: DemoPlot[] = [];
 export const galleryItems: GalleryItem[] = [];
+
+/* Farmer videos are recorded with the farmers' consent and added in the CMS. */
+export const farmingVideos: FarmingVideo[] = [];

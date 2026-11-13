@@ -14,7 +14,7 @@ export default async function AdminLoginPage() {
   return (
     <main className="mx-auto max-w-md px-6 py-24">
       <Wordmark />
-      <h1 className="type-h2 mt-12 text-forest-900">Leads</h1>
+      <h1 className="type-h2 mt-12 text-pine-700">Leads</h1>
       <p className="mt-3 text-ink-700">Sign in to see enquiries, partner applications and farmer registrations.</p>
       <LoginForm />
     </main>

@@ -11,9 +11,9 @@ export default function StudioPage() {
   if (isSanityConfigured) return <Studio />;
 
   return (
-    <main style={{ maxWidth: '44rem', margin: '0 auto', padding: '5rem 1.5rem', fontFamily: 'Arial, Helvetica, sans-serif', color: '#1a1d18', lineHeight: 1.6 }}>
-      <p style={{ fontSize: '0.75rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#7a5c1c' }}>Content studio</p>
-      <h1 style={{ fontFamily: 'Georgia, serif', fontWeight: 400, fontSize: '2.5rem', lineHeight: 1.1, margin: '1rem 0 1.5rem' }}>
+    <main style={{ maxWidth: '44rem', margin: '0 auto', padding: '5rem 1.5rem', fontFamily: 'Arial, Helvetica, sans-serif', color: '#1d2330', lineHeight: 1.6 }}>
+      <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#8a4f24' }}>Content studio</p>
+      <h1 style={{ fontWeight: 700, fontSize: '2.5rem', lineHeight: 1.1, letterSpacing: '-0.02em', margin: '1rem 0 1.5rem', color: '#24483c' }}>
         The studio is not connected yet.
       </h1>
       <p>

@@ -70,8 +70,12 @@ const nextConfig: NextConfig = {
       { source: '/testimonials', destination: '/farmer-stories', permanent: true },
       { source: '/about-us', destination: '/about', permanent: true },
       { source: '/contact-us', destination: '/contact', permanent: true },
-      { source: '/blog', destination: '/insights', permanent: true },
+      { source: '/blog', destination: '/learn', permanent: true },
       { source: '/business-opportunity', destination: '/become-a-partner', permanent: true },
+      // Pages renamed after the client's feedback on the brand and mobile proposal (November 2026).
+      { source: '/insights', destination: '/learn', permanent: true },
+      { source: '/insights/:slug', destination: '/learn/:slug', permanent: true },
+      { source: '/demo-plots', destination: '/field-visits', permanent: true },
     ];
   },
 };

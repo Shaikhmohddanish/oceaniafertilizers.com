@@ -4,6 +4,7 @@ import type {
   ArticleCategory,
   Crop,
   DemoPlot,
+  FarmingVideo,
   Faq,
   GalleryCategory,
   GalleryItem,
@@ -29,6 +30,7 @@ export interface ContentSource {
   getCrops(): Promise<Crop[]>;
   getTestimonials(): Promise<Testimonial[]>;
   getDemoPlots(): Promise<DemoPlot[]>;
+  getFarmingVideos(): Promise<FarmingVideo[]>;
   getGalleryItems(): Promise<GalleryItem[]>;
   getGalleryCategories(): Promise<GalleryCategory[]>;
   getArticles(): Promise<Article[]>;

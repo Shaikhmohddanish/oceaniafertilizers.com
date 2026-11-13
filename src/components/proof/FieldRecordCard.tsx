@@ -17,8 +17,8 @@ export function FieldRecordCard({ plot, headingLevel: Heading = 'h3' }: { plot: 
     <article className="flex h-full flex-col" data-reveal="rise">
       <header className="flex items-start justify-between gap-4">
         <div>
-          <Heading className="type-h3 text-forest-900">{plot.crop.title}</Heading>
-          <p className="type-small mt-1 font-medium text-forest-700">{productNames}</p>
+          <Heading className="type-h3 text-pine-700">{plot.crop.title}</Heading>
+          <p className="type-small mt-1 font-medium text-pine-600">{productNames}</p>
         </div>
         <PendingTag status={plot.status} />
       </header>
@@ -46,14 +46,14 @@ export function FieldRecordCard({ plot, headingLevel: Heading = 'h3' }: { plot: 
       <ul className="mt-5 space-y-2 text-ink-900">
         {plot.observations.map((observation) => (
           <li key={observation} className="flex gap-3">
-            <span aria-hidden="true" className="mt-[0.6em] h-1.5 w-1.5 shrink-0 bg-gold-500" />
+            <span aria-hidden="true" className="mt-[0.6em] h-1.5 w-1.5 shrink-0 bg-clay-600" />
             <span>{observation}</span>
           </li>
         ))}
       </ul>
 
       <details className="group mt-6 border-t border-[color:var(--line-strong)]">
-        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 font-medium text-forest-800 [&::-webkit-details-marker]:hidden">
+        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 font-medium text-pine-700 [&::-webkit-details-marker]:hidden">
           Plot details
           <span aria-hidden="true" className="text-xl leading-none transition-transform group-open:rotate-45">
             +
@@ -90,7 +90,7 @@ export function FieldRecordCard({ plot, headingLevel: Heading = 'h3' }: { plot: 
         {plot.testimonialId ? (
           <>
             {' '}
-            <Link href={`/farmer-stories#${plot.testimonialId}`} className="link-inline text-forest-800">
+            <Link href={`/farmer-stories#${plot.testimonialId}`} className="link-inline text-pine-700">
               Watch the farmer&apos;s story
             </Link>
             .

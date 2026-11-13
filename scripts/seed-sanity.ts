@@ -184,24 +184,20 @@ async function build(): Promise<Doc[]> {
     shortName: siteSettings.shortName,
     tagline: siteSettings.tagline,
     description: siteSettings.description,
+    adviceLanguages: siteSettings.adviceLanguages,
   });
 
   docs.push({
     _id: 'homePage',
     _type: 'homePage',
     hero: {
-      eyebrow: homePage.hero.eyebrow,
       headline: homePage.hero.headline,
       standfirst: homePage.hero.standfirst,
       image: await image(homePage.hero.image),
-      backdrop: homePage.hero.image.backdrop,
       primaryCta: { _type: 'cta', ...homePage.hero.primaryCta },
       secondaryCta: { _type: 'cta', ...homePage.hero.secondaryCta },
     },
-    pillars: homePage.pillars,
-    chapters: await Promise.all(
-      homePage.chapters.map(async (chapter) => ({ _key: key(), label: chapter.label, title: chapter.title, body: chapter.body, image: await image(chapter.image) })),
-    ),
+    learn: homePage.learn,
     products: {
       eyebrow: homePage.products.eyebrow,
       headline: homePage.products.headline,
@@ -213,19 +209,12 @@ async function build(): Promise<Doc[]> {
       headline: homePage.farmer.headline,
       body: homePage.farmer.body,
       image: await image(homePage.farmer.image),
-      points: keyed(homePage.farmer.points),
+      points: keyed(homePage.farmer.points, 'titledText'),
       cta: { _type: 'cta', ...homePage.farmer.cta },
     },
     stories: homePage.stories,
     results: homePage.results,
     practices: { ...homePage.practices, topics: keyed(homePage.practices.topics, 'titledText') },
-    partner: {
-      eyebrow: homePage.partner.eyebrow,
-      headline: homePage.partner.headline,
-      body: homePage.partner.body,
-      image: await image(homePage.partner.image),
-      cta: { _type: 'cta', ...homePage.partner.cta },
-    },
     contact: homePage.contact,
     seo: homePage.seo,
   });
@@ -234,7 +223,7 @@ async function build(): Promise<Doc[]> {
     _id: 'aboutPage',
     _type: 'aboutPage',
     hero: { ...aboutPage.hero, image: await image(aboutPage.hero.image) },
-    purpose: { headline: aboutPage.purpose.headline, body: await richText(aboutPage.purpose.body) },
+    purpose: { headline: aboutPage.purpose.headline, body: await richText(aboutPage.purpose.body), statements: aboutPage.purpose.statements },
     approach: { headline: aboutPage.approach.headline, intro: aboutPage.approach.intro, steps: keyed(aboutPage.approach.steps, 'titledText') },
     principles: { headline: aboutPage.principles.headline, items: keyed(aboutPage.principles.items, 'titledText') },
     leadership: [],

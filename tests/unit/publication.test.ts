@@ -50,5 +50,7 @@ describe('published farmer content', () => {
     expect(await repository.getTestimonials()).toEqual([]);
     expect(await repository.getDemoPlots()).toEqual([]);
     expect(await repository.getGalleryItems()).toEqual([]);
+    expect(await repository.getFarmingVideos()).toEqual([]);
+    expect(await repository.getFarmingVideo('test-fixture-video')).toBeNull();
   });
 });

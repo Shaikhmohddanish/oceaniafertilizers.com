@@ -64,16 +64,61 @@ test.describe('homepage farm callback', () => {
   });
 });
 
-test('product enquiry names the product', async ({ page }) => {
+test('an order request is stored and reaches the team as an order', async ({ page, browser }) => {
   await page.goto('/products/halad-special');
-  await page.fill('#enquiry-halad-special-fullName', 'Test Grower');
-  await page.fill('#enquiry-halad-special-phone', uniqueMobile(4));
-  await page.selectOption('#enquiry-halad-special-state', 'Karnataka');
-  await page.fill('#enquiry-halad-special-district', 'Chamarajanagar');
-  await page.check('#enquiry-halad-special-consentContact');
+  await page.getByRole('link', { name: 'Order Halad Special' }).click();
+  await expect(page).toHaveURL(/#order$/);
+  // The only pack size is chosen already.
+  await expect(page.locator('#order-halad-special-pack')).toHaveValue('5 litre can');
+  await page.fill('#order-halad-special-quantity', '2');
+  await page.fill('#order-halad-special-fullName', 'Test Order');
+  await page.fill('#order-halad-special-phone', uniqueMobile(4));
+  await page.selectOption('#order-halad-special-state', 'Karnataka');
+  await page.fill('#order-halad-special-district', 'Chamarajanagar');
+  await page.check('#order-halad-special-consentContact');
   await waitForFillTime(page);
-  await page.getByRole('button', { name: 'Enquire about Halad Special' }).last().click();
-  await expect(page.getByRole('status').filter({ hasText: 'Received' })).toContainText('about Halad Special');
+  await page.getByRole('button', { name: 'Send order request' }).click();
+  const received = page.getByRole('status').filter({ hasText: 'Order request received' });
+  await expect(received).toContainText('confirm the price and delivery for Halad Special');
+  const reference = (await received.textContent())?.match(/OF-[2-9A-HJ-NP-Z]{6}/)?.[0];
+  if (!reference) throw new Error('no reference shown');
+  // With a WhatsApp number set, the farmer can send the reference straight away.
+  await expect(received.getByRole('link', { name: /WhatsApp us/ })).toHaveAttribute('href', new RegExp(reference));
+
+  const admin = await signInToAdmin(browser);
+  await admin.goto(`/admin/leads?q=${reference}`);
+  await expect(admin.locator('tbody')).toContainText('Order request');
+  await admin.locator('tbody a', { hasText: reference }).click();
+  await expect(admin.locator('main')).toContainText('5 litre can');
+  await expect(admin.locator('main')).toContainText('Number of packs');
+  await admin.close();
+});
+
+test('the order form only accepts whole numbers of packs', async ({ page }) => {
+  await page.goto('/products/halad-special#order');
+  await page.fill('#order-halad-special-quantity', '0');
+  await page.getByRole('button', { name: 'Send order request' }).click();
+  await expect(page.locator('#order-halad-special-summary')).toContainText('Enter a whole number from 1 to 999.');
+});
+
+test('a field visit request is stored', async ({ page }) => {
+  await page.goto('/field-visits');
+  await page.getByLabel('A demo plot on my farm').check();
+  await page.fill('#field-visit-fullName', 'Test Visit');
+  await page.fill('#field-visit-phone', uniqueMobile(5));
+  await page.selectOption('#field-visit-state', 'Maharashtra');
+  await page.fill('#field-visit-district', 'Sangli');
+  await page.fill('#field-visit-location', 'Test village');
+  await page.selectOption('#field-visit-crop', 'Turmeric');
+  await page.check('#field-visit-consentContact');
+  await waitForFillTime(page);
+  await page.getByRole('button', { name: 'Book a field visit' }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Visit request received' })).toContainText('arrange the visit');
+});
+
+test('crop advice from a product page arrives with the product chosen', async ({ page }) => {
+  await page.goto('/advice?product=waves-mycorrhizal-biofertilizer');
+  await expect(page.locator('#advice-product')).toHaveValue('waves-mycorrhizal-biofertilizer');
 });
 
 test('partner application is stored and visible to the team', async ({ page, browser }) => {

@@ -62,6 +62,17 @@ export async function listLeads(db: AppDatabase, filters: LeadFilters, page = 1)
   return { rows, total: totals[0]?.value ?? 0 };
 }
 
+/** Leads received in the last `days` days, counted by form, for the summary above the list. */
+export async function countRecentLeadsByForm(db: AppDatabase, days = 30, now = new Date()): Promise<Partial<Record<LeadForm, number>>> {
+  const since = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+  const rows = await db
+    .select({ form: leads.form, value: count() })
+    .from(leads)
+    .where(gte(leads.createdAt, since))
+    .groupBy(leads.form);
+  return Object.fromEntries(rows.map((row) => [row.form, row.value]));
+}
+
 export async function getLead(db: AppDatabase, id: string): Promise<Lead | null> {
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
   const [row] = await db.select().from(leads).where(eq(leads.id, id)).limit(1);

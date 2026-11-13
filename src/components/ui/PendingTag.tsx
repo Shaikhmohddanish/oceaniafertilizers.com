@@ -8,9 +8,9 @@ export function PendingTag({ status, className = '' }: { status: PublicationStat
   if (status !== 'pending') return null;
   return (
     <span
-      className={`type-label inline-flex items-center gap-2 border border-gold-700/40 bg-ivory-100 px-2 py-1 text-gold-700 ${className}`}
+      className={`type-label inline-flex items-center gap-2 border border-clay-700/40 bg-paper-deep px-2 py-1 text-clay-700 ${className}`}
     >
-      <span aria-hidden="true" className="h-1.5 w-1.5 bg-gold-700" />
+      <span aria-hidden="true" className="h-1.5 w-1.5 bg-clay-700" />
       Pending approval
     </span>
   );

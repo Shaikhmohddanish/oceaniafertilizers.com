@@ -12,7 +12,7 @@ export function ArticleCard({
 }: {
   article: ArticleSummary;
   revealIndex?: number;
-  headingLevel?: 'h2' | 'h3';
+  headingLevel?: 'h2' | 'h3' | 'h4';
 }) {
   const category = article.categories[0];
   return (
@@ -28,11 +28,11 @@ export function ArticleCard({
         </div>
       ) : null}
       <div className="mt-5 flex flex-wrap items-center gap-3">
-        {category ? <p className="type-label text-gold-700">{category.title}</p> : null}
+        {category ? <p className="type-label text-clay-700">{category.title}</p> : null}
         <PendingTag status={article.status} />
       </div>
-      <Heading className="type-h3 mt-3 text-forest-900">
-        <Link href={`/insights/${article.slug}`} className="after:absolute after:inset-0 focus-visible:outline-none">
+      <Heading className="type-h3 mt-3 text-pine-700">
+        <Link href={`/learn/${article.slug}`} className="after:absolute after:inset-0 focus-visible:outline-none">
           {article.title}
         </Link>
       </Heading>
@@ -43,7 +43,7 @@ export function ArticleCard({
       </p>
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-2 hidden outline-2 outline-gold-700 group-has-[a:focus-visible]:block"
+        className="pointer-events-none absolute -inset-2 hidden outline-2 outline-clay-700 group-has-[a:focus-visible]:block"
       />
     </article>
   );

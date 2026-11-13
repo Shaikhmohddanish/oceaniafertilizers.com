@@ -1,6 +1,6 @@
 # Oceania Fertilizers website
 
-The website for Oceania Fertilizers (oceaniafertilizers.com): brand, product information and lead generation for farmers, dealers and partners across India.
+The website for Oceania Fertilizers (oceaniafertilizers.com): brand, product information and lead generation for farmers, dealers and partners across India. Since the client's feedback of 7 November 2026 it is built around "Let's understand farming together": crop advice, order requests, field visits and farmer videos, with WhatsApp and call one tap away on phones.
 
 - Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS 4
 - Sanity for content, with the Studio embedded at `/studio`
@@ -8,7 +8,7 @@ The website for Oceania Fertilizers (oceaniafertilizers.com): brand, product inf
 - Resend for lead notification emails, Cloudflare Turnstile for spam protection (optional)
 - A small leads admin at `/admin`
 
-Handover documents are in `docs/handover/`. Start with `verification.md` for what has been tested, and `client-checklist.md` for what Oceania still needs to supply.
+Handover documents are in `docs/handover/`. Start with `verification.md` for what has been tested, and `client-checklist.md` for what Oceania still needs to supply. `content-inventory.md` records the client's feedback, and `farmer-testing.md` describes the test with farmers that the proposal asks for.
 
 ## Quick start
 
@@ -47,6 +47,22 @@ To try the leads admin locally, copy `.env.example` to `.env.local`, set `ADMIN_
 | `node scripts/screenshots.mjs / /products` | Full-page screenshots at phone and desktop widths into `reports/screenshots/` |
 
 For realistic Lighthouse numbers, measure a production build: `NEXT_PUBLIC_SITE_ENV=production npm run build && npm start`, then `BASE_URL=http://localhost:3000 npm run perf`.
+
+## Pages
+
+| Address | Page |
+| --- | --- |
+| `/` | Homepage, in the order of the proposal's five moments: arrive, meet, choose (four paths), learn, inspect, the farmer section, connect |
+| `/advice` | Crop advice: call-back form, WhatsApp and call. `?product=slug` preselects a product |
+| `/products`, `/products/[slug]` | Product list and product pages. A published product with pack sizes has an order request form at `#order` |
+| `/field-visits` | Field visit and demo booking (`#book`), and documented demo plots |
+| `/learn`, `/learn/[slug]`, `/learn/videos/[slug]` | Learn farming together: farmer videos, good practices and guides |
+| `/farmer-stories`, `/gallery`, `/about` | Proof and company pages; empty sections stay hidden |
+| `/join-oceania`, `/become-a-partner`, `/contact` | Farmer community, partner application and general contact |
+| `/privacy-policy`, `/terms`, `/image-credits` | Legal and credits |
+| `/admin`, `/studio` | Leads admin and the content editor; never indexed |
+
+Old addresses redirect permanently (`next.config.ts`): `/insights` to `/learn`, `/demo-plots` to `/field-visits`, and the workbook's names such as `/blog`, `/about-us` and `/contact-us`.
 
 ## How the code is organised
 
@@ -88,17 +104,18 @@ The visitor sees a success message, with a reference such as `OF-7K2M9Q`, only a
 ### Rules the code enforces
 
 - Product structured data has no prices, ratings or reviews.
-- Farmer stories and demo plots cannot be published in the Studio without a recorded consent and its date.
+- Ordering is a request, not a sale: no prices or payments. The order form and the Order buttons appear only for a published product with pack sizes (`src/lib/ordering.ts`); the server action checks the same.
+- Farmer stories, farmer videos and demo plots cannot be published in the Studio without a recorded consent and its date.
 - The CMS has no fields for farmers' phone numbers or addresses. The free Sanity plan's datasets are publicly readable.
-- Contact details, social links and the WhatsApp number appear only once they are entered in Site settings.
+- Contact details, social links and the WhatsApp number appear only once they are entered in Site settings. Until then, the contact bar on phones offers only Get advice.
 - Analytics loads only on production, only when a measurement ID is set, and without cookies.
 
 ## Conventions
 
 - ASCII only in code, site copy and documentation, at the client's request. `npm run check:ascii` enforces it and also catches HTML entities for curly quotes and dashes. Icons and arrows are SVG.
-- Colours, type and spacing are tokens in `src/styles/globals.css`. Tailwind's default palette is switched off.
+- Colours, type and spacing are tokens in `src/styles/globals.css`. Tailwind's default palette is switched off. The palette is Pine and clay (7 November 2026): pine `#24483C` for the brand, clay `#EDB58A` for actions, paper `#F5F1E8` for the page and ink `#1D2330` for text. The O-shaped frame (`src/components/brand/OFrame.tsx`) is provisional until the official logo arrives.
 - Motion is CSS only plus one small observer (`src/components/motion/RevealObserver.tsx`), and it respects reduced-motion settings.
-- Sections far down the homepage, and the footer, use `render-later` (`content-visibility: auto`) so the first screen paints sooner. Tools that read off-screen content may need `.render-later { content-visibility: visible }` first; the Playwright and screenshot scripts already do this.
+- Sections far down the homepage, and the footer, use `render-later` (`content-visibility: auto`) so the first screen paints sooner. While skipped, a section is `--render-later-height` tall (1600 px below 1024 px wide, where sections stack; 950 px from 1024 px). A section taller than that spills into the next one, and Lighthouse's accessibility check then reads its text against the wrong background. So keep the estimate generous, and do not defer a section that can grow past it when the next section is dark. Tools that read off-screen content may need `.render-later { content-visibility: visible }` first; the Playwright and screenshot scripts already do this.
 - Type: Arial throughout, at the client's request, with bold headings. It is already installed on Windows, macOS and iOS (Android shows its standard sans), so no web fonts are downloaded. Share images and the favicon are drawn with Arimo, an open-licence typeface designed to match Arial (SIL Open Font License, files and licence in `src/fonts/og/`).
 
 ## Environment variables

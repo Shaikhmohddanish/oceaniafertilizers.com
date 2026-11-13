@@ -15,9 +15,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const journeys = [
-  { href: '/become-a-partner', title: 'Distributors, dealers and retailers', body: 'Apply to become an Oceania partner.' },
-  { href: '/products', title: 'Questions about a product', body: 'Each product page has its own enquiry form.' },
+  { href: '/advice', title: 'Crop advice', body: 'Tell us your crop and the problem; we call you back.' },
+  { href: '/products', title: 'Ordering a product', body: 'Each product page has an order request form.' },
+  { href: '/field-visits', title: 'Field visits and demos', body: 'Book a visit from our team or a demo plot.' },
   { href: '/join-oceania', title: 'Farmers', body: 'Join the Oceania farmer community.' },
+  { href: '/become-a-partner', title: 'Distributors, dealers and retailers', body: 'Apply to become an Oceania partner.' },
 ];
 
 export default async function ContactPage() {
@@ -34,10 +36,10 @@ export default async function ContactPage() {
         crumbs={[{ label: 'Contact', href: '/contact' }]}
       />
 
-      <section aria-labelledby="contact-form-title" className="bg-ivory-50 pb-[var(--section-space)]">
+      <section aria-labelledby="contact-form-title" className="bg-paper pb-[var(--section-space)]">
         <div className="container-site grid-site gap-y-16 border-t border-[color:var(--line-strong)] pt-12 lg:pt-16">
           <div className="col-span-12 lg:col-span-7">
-            <h2 id="contact-form-title" className="type-h3 mb-8 text-forest-900">
+            <h2 id="contact-form-title" className="type-h3 mb-8 text-pine-700">
               Send us a message
             </h2>
             <ContactForm products={productOptions} fallback={<ContactFallback contact={contact} />} />
@@ -51,9 +53,9 @@ export default async function ContactPage() {
                   {contact.whatsapp ? (
                     <li>
                       <a href={whatsappHref(contact.whatsapp, 'Hello Oceania, I have a question.')} className="group inline-flex items-start gap-4">
-                        <WhatsAppIcon className="mt-0.5 text-gold-700" />
+                        <WhatsAppIcon className="mt-0.5 text-clay-700" />
                         <span>
-                          <span className="block font-semibold text-forest-900">WhatsApp</span>
+                          <span className="block font-semibold text-pine-700">WhatsApp</span>
                           <span className="link-draw text-ink-700">{formatPhone(contact.whatsapp)}</span>
                         </span>
                       </a>
@@ -62,9 +64,9 @@ export default async function ContactPage() {
                   {contact.phone ? (
                     <li>
                       <a href={`tel:${contact.phone}`} className="inline-flex items-start gap-4">
-                        <PhoneIcon className="mt-0.5 text-gold-700" />
+                        <PhoneIcon className="mt-0.5 text-clay-700" />
                         <span>
-                          <span className="block font-semibold text-forest-900">Phone</span>
+                          <span className="block font-semibold text-pine-700">Phone</span>
                           <span className="link-draw text-ink-700">{formatPhone(contact.phone)}</span>
                           {contact.hours ? <span className="type-caption mt-1 block text-ink-500">{contact.hours}</span> : null}
                         </span>
@@ -74,9 +76,9 @@ export default async function ContactPage() {
                   {contact.email ? (
                     <li>
                       <a href={`mailto:${contact.email}`} className="inline-flex items-start gap-4">
-                        <MailIcon className="mt-0.5 text-gold-700" />
+                        <MailIcon className="mt-0.5 text-clay-700" />
                         <span>
-                          <span className="block font-semibold text-forest-900">Email</span>
+                          <span className="block font-semibold text-pine-700">Email</span>
                           <span className="link-draw text-ink-700">{contact.email}</span>
                         </span>
                       </a>
@@ -84,11 +86,12 @@ export default async function ContactPage() {
                   ) : null}
                   {address ? (
                     <li className="text-ink-700">
-                      <span className="block font-semibold text-forest-900">Office</span>
+                      <span className="block font-semibold text-pine-700">Office</span>
                       {address}
                     </li>
                   ) : null}
                 </ul>
+                {settings.adviceLanguages ? <p className="type-small mt-6 text-ink-700">Advice in {settings.adviceLanguages}.</p> : null}
               </div>
             ) : null}
 
@@ -99,15 +102,15 @@ export default async function ContactPage() {
                   <li key={journey.href} className="border-b border-[color:var(--line)]">
                     <Link href={journey.href} className="has-arrow group flex items-center justify-between gap-6 py-5">
                       <span>
-                        <span className="block font-semibold text-forest-900">{journey.title}</span>
+                        <span className="block font-semibold text-pine-700">{journey.title}</span>
                         <span className="type-small mt-1 block text-ink-700">{journey.body}</span>
                       </span>
-                      <ArrowRightIcon className="shrink-0 text-forest-800" />
+                      <ArrowRightIcon className="shrink-0 text-pine-700" />
                     </Link>
                   </li>
                 ))}
               </ul>
-              <p className="type-small mt-10 border-l-2 border-gold-500 pl-5 text-ink-700">
+              <p className="type-small mt-10 border-l-2 border-clay-600 pl-5 text-ink-700">
                 We work with farmers and partners across India. Wherever you farm, write to us and the right person in our team will reply.
               </p>
             </div>

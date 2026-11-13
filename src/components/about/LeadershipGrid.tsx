@@ -39,12 +39,12 @@ export function LeadershipGrid({ members }: { members: LeadershipMember[] }) {
                 onClick={() => open(index)}
                 aria-label={`Read about ${person.name}`}
                 aria-haspopup="dialog"
-                className="absolute right-4 bottom-4 flex h-12 w-12 items-center justify-center rounded-full bg-ivory-50 text-forest-900 transition-colors hover:bg-white"
+                className="absolute right-4 bottom-4 flex h-12 w-12 items-center justify-center rounded-full bg-paper text-pine-700 transition-colors hover:bg-white"
               >
                 <PlusIcon />
               </button>
             </div>
-            <p className="type-h3 mt-5 text-forest-900">{person.name}</p>
+            <p className="type-h3 mt-5 text-pine-700">{person.name}</p>
             <p className="mt-1 text-ink-700">{person.role}</p>
           </li>
         ))}
@@ -62,7 +62,7 @@ export function LeadershipGrid({ members }: { members: LeadershipMember[] }) {
         onClick={(event) => {
           if (event.target === event.currentTarget) dialogRef.current?.close();
         }}
-        className="ml-auto h-dvh max-h-none w-[min(40rem,100vw)] max-w-none bg-ivory-50 p-0 text-ink-900"
+        className="ml-auto h-dvh max-h-none w-[min(40rem,100vw)] max-w-none bg-paper p-0 text-ink-900"
       >
         {member ? (
           <div className="flex min-h-full flex-col px-8 py-8 sm:px-12">
@@ -74,7 +74,7 @@ export function LeadershipGrid({ members }: { members: LeadershipMember[] }) {
               Close
               <CloseIcon />
             </button>
-            <p className="type-h1 mt-8 text-forest-900">{member.name}</p>
+            <p className="type-h1 mt-8 text-pine-700">{member.name}</p>
             <p className="type-lead mt-3 text-ink-700">{member.role}</p>
             <RichText value={member.bio} className="mt-10 text-ink-700" />
           </div>

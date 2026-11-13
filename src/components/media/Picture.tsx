@@ -88,7 +88,7 @@ export function Figure({
   tone = 'light',
   ...picture
 }: FigureProps) {
-  const captionColor = tone === 'light' ? 'text-ink-500' : 'text-sage-300';
+  const captionColor = tone === 'light' ? 'text-ink-500' : 'text-pine-200';
   return (
     <figure className={figureClassName}>
       <div

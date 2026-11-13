@@ -12,9 +12,11 @@ import {
   farmCallbackSchema,
   farmerInterestLabels,
   farmerSchema,
+  fieldVisitSchema,
   newsletterSchema,
+  orderRequestSchema,
   partnerSchema,
-  productEnquirySchema,
+  visitTypeLabels,
 } from '@/lib/validation/forms';
 
 import { getDb } from '../db/client';
@@ -56,6 +58,8 @@ export async function submitContact(_previous: FormState, formData: FormData): P
 }
 
 export async function submitFarmCallback(_previous: FormState, formData: FormData): Promise<FormState> {
+  const slug = formData.get('product');
+  const product = typeof slug === 'string' && slug ? await getProduct(slug) : null;
   return handleLeadSubmission(
     {
       form: 'farm_callback',
@@ -65,7 +69,7 @@ export async function submitFarmCallback(_previous: FormState, formData: FormDat
         phone: data.phone,
         state: data.state,
         district: data.location,
-        details: { location: data.location, crop: data.crop, area: data.area },
+        details: { location: data.location, crop: data.crop, area: data.area, productName: product?.name },
         consents: consents(),
         dedupeParts: [data.phone, data.crop],
       }),
@@ -75,30 +79,64 @@ export async function submitFarmCallback(_previous: FormState, formData: FormDat
   );
 }
 
-export async function submitProductEnquiry(_previous: FormState, formData: FormData): Promise<FormState> {
+export async function submitOrderRequest(_previous: FormState, formData: FormData): Promise<FormState> {
   const slug = formData.get('product');
   const product = typeof slug === 'string' ? await getProduct(slug) : null;
+  const [firstPack, ...otherPacks] = product?.packSizes ?? [];
+  if (!product || product.status !== 'published' || !firstPack) {
+    return {
+      status: 'error',
+      message: 'This product cannot be ordered online yet. Please ask for crop advice and our team will help.',
+      respondedAt: Date.now(),
+    };
+  }
   return handleLeadSubmission(
     {
-      form: 'product_enquiry',
-      schema: productEnquirySchema,
+      form: 'order_request',
+      schema: orderRequestSchema([firstPack, ...otherPacks]),
       build: (data) => ({
         fullName: data.fullName,
         phone: data.phone,
-        email: data.email,
         state: data.state,
         district: data.district,
         details: {
-          product: data.product,
-          productName: product?.name ?? data.product,
-          crop: data.crop,
-          area: data.area,
-          message: data.message,
+          product: product.slug,
+          productName: product.name,
+          pack: data.pack,
+          quantity: data.quantity,
+          pinCode: data.pinCode,
+          notes: data.notes,
         },
         consents: consents(),
-        dedupeParts: [data.phone, data.product],
+        dedupeParts: [data.phone, product.slug, data.pack, String(data.quantity)],
       }),
-      successMessage: `Thank you. Our team will contact you about ${product?.name ?? 'this product'}.`,
+      successMessage: `Thank you. Our team will call you to confirm the price and delivery for ${product.name}.`,
+    },
+    formData,
+  );
+}
+
+export async function submitFieldVisit(_previous: FormState, formData: FormData): Promise<FormState> {
+  return handleLeadSubmission(
+    {
+      form: 'field_visit',
+      schema: fieldVisitSchema,
+      build: (data) => ({
+        fullName: data.fullName,
+        phone: data.phone,
+        state: data.state,
+        district: data.district,
+        details: {
+          visitType: visitTypeLabels[data.visitType],
+          location: data.location,
+          crop: data.crop,
+          area: data.area,
+          preferredTime: data.preferredTime,
+        },
+        consents: consents(),
+        dedupeParts: [data.phone, data.visitType],
+      }),
+      successMessage: 'Thank you. Our team will call you to arrange the visit.',
     },
     formData,
   );

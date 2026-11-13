@@ -7,7 +7,8 @@ test('mobile menu traps focus, closes on Escape and returns focus', async ({ pag
   await trigger.click();
   const menu = page.getByRole('dialog', { name: 'Site menu' });
   await expect(menu).toBeVisible();
-  await expect(menu.getByRole('link', { name: /Field results/ })).toBeVisible();
+  await expect(menu.getByRole('link', { name: /Field visits/ })).toBeVisible();
+  await expect(menu.getByRole('link', { name: /Learn/ }).first()).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(menu).toBeHidden();
   await expect(trigger).toBeFocused();
@@ -26,7 +27,7 @@ test('farmer story video loads only when played, and stops on close', async ({ p
 });
 
 test('before and after slider works by keyboard and by pointer', async ({ page }) => {
-  await page.goto('/demo-plots');
+  await page.goto('/field-visits');
   const slider = page.locator('input[type="range"]').first();
   await slider.focus();
   for (let index = 0; index < 5; index += 1) await page.keyboard.press('ArrowRight');
@@ -98,4 +99,27 @@ test('skip link moves focus to the main content', async ({ page }) => {
   await expect(skip).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('#main')).toBeFocused();
+});
+
+test('a farmer video page loads the player only when play is pressed', async ({ page }) => {
+  await page.goto('/learn/videos/test-fixture-video');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Test fixture video');
+  await expect(page.locator('iframe')).toHaveCount(0);
+  await page.getByRole('button', { name: /Play video: Test fixture video/ }).click();
+  await expect(page.locator('iframe')).toHaveAttribute('src', /youtube-nocookie\.com\/embed\/aqz-KE-bpKQ/);
+});
+
+test('on phones, WhatsApp, call and crop advice stay one tap away', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/products');
+  const bar = page.getByRole('navigation', { name: 'Contact Oceania' });
+  await expect(bar).toBeVisible();
+  // The test fixtures set numbers that cannot reach anyone, so both channels appear.
+  await expect(bar.getByRole('link', { name: 'WhatsApp' })).toHaveAttribute('href', /^https:\/\/wa\.me\/910000000000/);
+  await expect(bar.getByRole('link', { name: 'Call' })).toHaveAttribute('href', 'tel:+910000000000');
+  await bar.getByRole('link', { name: 'Get advice' }).click();
+  await expect(page).toHaveURL(/\/advice$/);
+
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await expect(bar).toBeHidden();
 });

@@ -1,6 +1,11 @@
 import { orderRankField, orderRankOrdering } from '@sanity/orderable-document-list';
 import { defineArrayMember, defineField, defineType } from 'sanity';
 
+import { consentFields, stateList } from './catalogue';
+
+// /learn/videos is the farmer video library, so no article may use "videos" as its address.
+const RESERVED_ARTICLE_SLUGS = new Set(['videos']);
+
 export const author = defineType({
   name: 'author',
   title: 'Author',
@@ -29,7 +34,10 @@ export const article = defineType({
       type: 'slug',
       group: 'content',
       options: { source: 'title', maxLength: 96 },
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.required().custom((value) =>
+          value?.current && RESERVED_ARTICLE_SLUGS.has(value.current) ? 'This word is reserved. Choose another.' : true,
+        ),
     }),
     defineField({
       name: 'excerpt',
@@ -116,4 +124,100 @@ export const faq = defineType({
   preview: { select: { title: 'question', subtitle: 'topic' } },
 });
 
-export const editorialTypes = [author, article, faq];
+/** A short video about a farming practice: "Learn farming together". */
+export const farmingVideo = defineType({
+  name: 'farmingVideo',
+  title: 'Farmer video',
+  type: 'document',
+  orderings: [orderRankOrdering],
+  groups: [
+    { name: 'video', title: 'Video', default: true },
+    { name: 'people', title: 'People and consent' },
+    { name: 'links', title: 'Related' },
+  ],
+  fields: [
+    orderRankField({ type: 'farmingVideo' }),
+    defineField({ name: 'title', title: 'Title', type: 'string', group: 'video', validation: (rule) => rule.required().max(110) }),
+    defineField({
+      name: 'slug',
+      title: 'Web address',
+      type: 'slug',
+      group: 'video',
+      options: { source: 'title', maxLength: 96 },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'videoUrl',
+      title: 'Video link',
+      type: 'url',
+      group: 'video',
+      description: 'A YouTube or Vimeo link. Upload the video there first; do not upload video files here.',
+      validation: (rule) =>
+        rule.required().custom((value) =>
+          typeof value === 'string' && /(youtube\.com|youtu\.be|vimeo\.com)/.test(value) ? true : 'Use a YouTube or Vimeo link.',
+        ),
+    }),
+    defineField({ name: 'durationSeconds', title: 'Length in seconds', type: 'number', group: 'video', validation: (rule) => rule.min(1).integer() }),
+    defineField({ name: 'poster', title: 'Cover image', type: 'accessibleImage', group: 'video', description: 'Optional; the YouTube thumbnail is used otherwise.' }),
+    defineField({ name: 'topic', title: 'Topic', type: 'reference', group: 'video', to: [{ type: 'articleCategory' }] }),
+    defineField({ name: 'crop', title: 'Crop', type: 'reference', group: 'video', to: [{ type: 'crop' }] }),
+    defineField({
+      name: 'summary',
+      title: 'Summary',
+      type: 'text',
+      rows: 3,
+      group: 'video',
+      description: 'One or two sentences on what the video shows. Also used for search results.',
+      validation: (rule) => rule.required().max(240),
+    }),
+    defineField({
+      name: 'points',
+      title: 'What you will learn',
+      type: 'array',
+      group: 'video',
+      of: [defineArrayMember({ type: 'string' })],
+      validation: (rule) => rule.max(5),
+    }),
+    defineField({ name: 'language', title: 'Language spoken', type: 'string', group: 'video', initialValue: 'Marathi', validation: (rule) => rule.required() }),
+    defineField({ name: 'transcript', title: 'Transcript in English', type: 'simpleText', group: 'video', description: 'Needed so the video is accessible to everyone.' }),
+    defineField({ name: 'publishedAt', title: 'Publication date', type: 'date', group: 'video', validation: (rule) => rule.required() }),
+    defineField({ name: 'featured', title: 'Feature on the homepage', type: 'boolean', group: 'video', initialValue: false }),
+    defineField({
+      name: 'presenter',
+      title: 'Name to show',
+      type: 'string',
+      group: 'people',
+      description: 'Exactly as the person agreed to be named: a full name, a first name with an initial, or a description such as "A turmeric grower".',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'role',
+      title: 'Who is speaking',
+      type: 'string',
+      group: 'people',
+      options: {
+        list: [
+          { title: 'A farmer', value: 'farmer' },
+          { title: 'An agronomist', value: 'agronomist' },
+          { title: 'The Oceania team', value: 'team' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'farmer',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({ name: 'district', title: 'District', type: 'string', group: 'people' }),
+    defineField({ name: 'state', title: 'State', type: 'string', group: 'people', options: { list: [...stateList()] } }),
+    ...consentFields.map((field) => ({ ...field, group: 'people' })),
+    defineField({
+      name: 'products',
+      title: 'Related products',
+      type: 'array',
+      group: 'links',
+      of: [defineArrayMember({ type: 'reference', to: [{ type: 'product' }] })],
+    }),
+  ],
+  preview: { select: { title: 'title', subtitle: 'presenter', media: 'poster' } },
+});
+
+export const editorialTypes = [author, article, farmingVideo, faq];

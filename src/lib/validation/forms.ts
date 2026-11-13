@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { isValidGstin, isValidPinCode, normaliseIndianMobile } from '@/lib/india/identifiers';
 import { STATES_AND_UNION_TERRITORIES } from '@/lib/india/states';
 
-import { contactRoles, contactTopics, experienceLevels, farmerInterests } from './labels';
+import { contactRoles, contactTopics, experienceLevels, farmerInterests, visitTypes } from './labels';
 
 export * from './labels';
 
@@ -62,6 +62,11 @@ export const pinCode = z
   .min(1, 'Enter your PIN code.')
   .refine(isValidPinCode, 'Enter a 6-digit PIN code.');
 
+export const optionalPinCode = z.preprocess(
+  emptyToUndefined,
+  z.string().trim().refine(isValidPinCode, 'Enter a 6-digit PIN code, or leave this empty.').optional(),
+);
+
 export const optionalGstin = z.preprocess(
   emptyToUndefined,
   z
@@ -110,20 +115,42 @@ export const farmCallbackSchema = z.object({
   state: region,
   crop: requiredText('Choose your main crop.', 60),
   area: optionalAcres,
+  /** Set when someone asks for advice from a product page. */
+  product: optionalText(80),
   phone: mobile,
   consentContact: requiredConsent('Please confirm that we may contact you.'),
 });
 
-export const productEnquirySchema = z.object({
-  product: requiredText('Choose a product.', 80),
+/** Pack sizes come from the product being ordered, so only its own packs are accepted. */
+export function orderRequestSchema(packSizes: readonly [string, ...string[]]) {
+  return z.object({
+    product: requiredText('Choose a product.', 80),
+    pack: z.enum(packSizes, { error: 'Choose a pack size.' }),
+    quantity: z.coerce
+      .number({ error: 'Enter how many packs you need.' })
+      .int('Enter a whole number of packs.')
+      .min(1, 'Enter at least 1 pack.')
+      .max(999, 'For more than 999 packs, please call or message us.'),
+    fullName,
+    phone: mobile,
+    state: region,
+    district: requiredText('Enter your village, town or district.', 100),
+    pinCode: optionalPinCode,
+    notes: optionalText(1000),
+    consentContact: requiredConsent('Please confirm that we may call you about this order.'),
+  });
+}
+
+export const fieldVisitSchema = z.object({
+  visitType: z.enum(visitTypes, { error: 'Choose what you would like.' }),
   fullName,
   phone: mobile,
-  email: optionalEmail,
   state: region,
   district,
-  crop: optionalText(60),
+  location: requiredText('Enter your village or town.', 100),
+  crop: requiredText('Choose your main crop.', 60),
   area: optionalAcres,
-  message: optionalText(1000),
+  preferredTime: optionalText(80),
   consentContact: requiredConsent('Please confirm that we may contact you.'),
 });
 
@@ -168,7 +195,6 @@ export const newsletterSchema = z.object({
 
 export type ContactInput = z.infer<typeof contactSchema>;
 export type FarmCallbackInput = z.infer<typeof farmCallbackSchema>;
-export type ProductEnquiryInput = z.infer<typeof productEnquirySchema>;
 export type PartnerInput = z.infer<ReturnType<typeof partnerSchema>>;
 export type FarmerInput = z.infer<typeof farmerSchema>;
 export type NewsletterInput = z.infer<typeof newsletterSchema>;

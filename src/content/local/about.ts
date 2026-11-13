@@ -25,6 +25,12 @@ export const aboutPage: AboutPage = {
         'Our work is to develop inputs that do a clear job, and to share the knowledge that helps farmers use them well. A good product used badly is still a bad decision. We care about both halves.',
       ),
     ),
+    // client: the three statements from the homepage mockups.
+    statements: [
+      'We develop effective agricultural inputs.',
+      'We help farmers make better decisions.',
+      'We work for more productive farms and a better tomorrow.',
+    ],
   },
   approach: {
     headline: 'How we work',

@@ -36,6 +36,8 @@ The project folder is a Git repository with no commits yet. Create a private rep
 
    Pending migrations run in a single transaction. Run this again whenever a new file appears in `drizzle/`.
 
+   The November 2026 update added `drizzle/0001_new_lead_forms.sql`, which adds the order request and field visit enquiry types. A database migrated before that update needs this command again before the new version goes live. Otherwise those two forms cannot store requests. The visitor sees "Sorry, we could not save your details just now, so nothing was sent.", and the logs show `lead_insert_failed`. Nothing is lost silently.
+
 ## 4. Content (Sanity)
 
 1. At sanity.io/manage, create a project with a dataset called `production`. On the free plan, datasets are publicly readable. That is why the CMS has no fields for farmers' phone numbers or addresses. Drafts are never public.
@@ -156,7 +158,9 @@ Preview deployments show content still awaiting approval, with a marker, and are
 - [ ] `https://oceaniafertilizers.com/robots.txt` allows crawling and lists the sitemap; `www` redirects to the apex
 - [ ] Sitemap submitted in Search Console
 - [ ] PageSpeed Insights run on the homepage and one product page, mobile and desktop
-- [ ] Old links checked: `/testimonials`, `/about-us`, `/contact-us`, `/blog` and `/business-opportunity` redirect to their new pages
+- [ ] Old links checked: `/testimonials`, `/about-us`, `/contact-us`, `/blog`, `/business-opportunity`, `/insights` and `/demo-plots` redirect to their new pages
+- [ ] WhatsApp and phone numbers entered in Site settings; on a phone, the bar at the bottom of the screen opens WhatsApp and the dialler with the right number
+- [ ] A test order request and a test field visit request from the live site arrive by email and show in `/admin`, then are deleted
 
 ## 12. Running the site
 

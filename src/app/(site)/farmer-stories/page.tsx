@@ -36,7 +36,7 @@ export default async function FarmerStoriesPage() {
         crumbs={[{ label: 'Farmer stories', href: '/farmer-stories' }]}
       />
 
-      <section aria-labelledby="stories-title" className="bg-ivory-50 pb-[var(--section-space)]">
+      <section aria-labelledby="stories-title" className="bg-paper pb-[var(--section-space)]">
         <div className="container-site">
           <h2 id="stories-title" className="sr-only">
             Farmer stories
@@ -96,16 +96,16 @@ export default async function FarmerStoriesPage() {
         </div>
       </section>
 
-      <section aria-labelledby="stay-in-touch-title" className="section-space bg-ivory-100">
+      <section aria-labelledby="stay-in-touch-title" className="section-space bg-paper-deep">
         <div className="container-site grid-site gap-y-10">
           <div className="col-span-12 lg:col-span-5">
-            <h2 id="stay-in-touch-title" className="type-h2 max-w-[16ch] text-forest-900">
+            <h2 id="stay-in-touch-title" className="type-h2 max-w-[16ch] text-pine-700">
               New stories and field results, as they are published.
             </h2>
             {settings.whatsappChannelUrl ? (
               <p className="mt-6 text-ink-700">
                 Or follow the{' '}
-                <a href={settings.whatsappChannelUrl} className="link-inline font-medium text-forest-800" rel="noopener noreferrer" target="_blank">
+                <a href={settings.whatsappChannelUrl} className="link-inline font-medium text-pine-700" rel="noopener noreferrer" target="_blank">
                   Oceania WhatsApp channel
                 </a>
                 .

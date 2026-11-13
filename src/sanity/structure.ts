@@ -74,9 +74,18 @@ export const structure: StructureResolver = (S, context) => {
       orderableDocumentListDeskItem({ type: 'galleryItem', title: 'Gallery', S, context }),
       S.documentTypeListItem('galleryCategory').title('Gallery categories'),
       S.divider(),
-      S.documentTypeListItem('article').title('Articles'),
-      S.documentTypeListItem('articleCategory').title('Article topics'),
-      S.documentTypeListItem('author').title('Authors'),
+      S.listItem()
+        .title('Learn')
+        .child(
+          S.list()
+            .title('Learn farming together')
+            .items([
+              orderableDocumentListDeskItem({ type: 'farmingVideo', title: 'Farmer videos', S, context }),
+              S.documentTypeListItem('article').title('Articles'),
+              S.documentTypeListItem('articleCategory').title('Topics'),
+              S.documentTypeListItem('author').title('Authors'),
+            ]),
+        ),
       orderableDocumentListDeskItem({ type: 'faq', title: 'Questions and answers', S, context }),
     ]);
 };

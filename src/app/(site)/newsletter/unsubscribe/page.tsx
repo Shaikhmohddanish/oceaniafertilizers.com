@@ -62,11 +62,11 @@ async function resolveView(params: Record<string, string | string[] | undefined>
 export default async function UnsubscribePage({ searchParams }: Props) {
   const view = await resolveView(await searchParams);
   return (
-    <section className="section-space bg-ivory-50" aria-labelledby="unsubscribe-title">
+    <section className="section-space bg-paper" aria-labelledby="unsubscribe-title">
       <div className="container-site">
         <div className="max-w-[40rem]">
-          <p className="type-label text-gold-700">Newsletter</p>
-          <h1 id="unsubscribe-title" className="type-h1 mt-6 text-forest-900">
+          <p className="type-label text-clay-700">Newsletter</p>
+          <h1 id="unsubscribe-title" className="type-h1 mt-6 text-pine-700">
             {view.title}
           </h1>
           <p className="type-lead mt-8 text-ink-700">{view.body}</p>
@@ -79,7 +79,7 @@ export default async function UnsubscribePage({ searchParams }: Props) {
             </form>
           ) : (
             <p className="mt-10">
-              <Link href={view === invalid ? '/contact' : '/'} className="link-draw font-medium text-forest-900">
+              <Link href={view === invalid ? '/contact' : '/'} className="link-draw font-medium text-pine-700">
                 {view === invalid ? 'Send us a message' : 'Go to the homepage'}
               </Link>
             </p>

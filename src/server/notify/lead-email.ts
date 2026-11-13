@@ -7,10 +7,12 @@ import type { LeadForm } from '../db/schema';
 
 export const formLabels: Record<LeadForm, string> = {
   contact: 'General enquiry',
-  farm_callback: 'Farm callback request',
+  farm_callback: 'Crop advice request',
   product_enquiry: 'Product enquiry',
   partner_application: 'Partner application',
   farmer_registration: 'Farmer registration',
+  order_request: 'Order request',
+  field_visit: 'Field visit request',
 };
 
 const detailLabels: Record<string, string> = {
@@ -30,6 +32,11 @@ const detailLabels: Record<string, string> = {
   gstin: 'GSTIN',
   experience: 'Experience with agricultural inputs',
   experienceSummary: 'About their business',
+  pack: 'Pack',
+  quantity: 'Number of packs',
+  notes: 'Notes',
+  visitType: 'Asked for',
+  preferredTime: 'When suits them',
 };
 
 export type LeadEmailInput = {
@@ -107,12 +114,12 @@ export function leadEmailHtml(input: LeadEmailInput): string {
   const tableRows = rows(input)
     .map(
       ([label, value]) =>
-        `<tr><td style="padding:6px 16px 6px 0;color:#5c6257;vertical-align:top;white-space:nowrap">${escapeHtml(label)}</td><td style="padding:6px 0;color:#1a1d18;white-space:pre-wrap">${escapeHtml(value)}</td></tr>`,
+        `<tr><td style="padding:6px 16px 6px 0;color:#5a6170;vertical-align:top;white-space:nowrap">${escapeHtml(label)}</td><td style="padding:6px 0;color:#1d2330;white-space:pre-wrap">${escapeHtml(value)}</td></tr>`,
     )
     .join('');
-  return `<!doctype html><html><body style="margin:0;padding:24px;background:#f7f3ea;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5">
-<p style="margin:0 0 16px;color:#1e3a2b;font-size:18px">New ${escapeHtml(formLabels[input.form].toLowerCase())} from the website</p>
+  return `<!doctype html><html><body style="margin:0;padding:24px;background:#f5f1e8;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5">
+<p style="margin:0 0 16px;color:#24483c;font-size:18px;font-weight:bold">New ${escapeHtml(formLabels[input.form].toLowerCase())} from the website</p>
 <table style="border-collapse:collapse">${tableRows}</table>
-<p style="margin:24px 0 0"><a href="${escapeHtml(input.adminUrl)}" style="color:#1e3a2b">Open in the leads admin</a></p>
+<p style="margin:24px 0 0"><a href="${escapeHtml(input.adminUrl)}" style="color:#24483c">Open in the leads admin</a></p>
 </body></html>`;
 }

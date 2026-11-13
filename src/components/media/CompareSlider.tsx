@@ -73,11 +73,11 @@ export function CompareSlider({
           <Picture image={after} fill sizes={sizes} className="pointer-events-none object-cover" />
         </div>
 
-        <span className="type-label pointer-events-none absolute top-3 left-3 bg-ivory-50 px-2 py-1 text-ink-900">{beforeLabel}</span>
-        <span className="type-label pointer-events-none absolute top-3 right-3 bg-forest-800 px-2 py-1 text-ivory-50">{afterLabel}</span>
+        <span className="type-label pointer-events-none absolute top-3 left-3 bg-paper px-2 py-1 text-ink-900">{beforeLabel}</span>
+        <span className="type-label pointer-events-none absolute top-3 right-3 bg-pine-700 px-2 py-1 text-paper">{afterLabel}</span>
 
-        <div className="pointer-events-none absolute inset-y-0 w-px bg-ivory-50" style={{ left: `${position}%` }} aria-hidden="true">
-          <span className="absolute top-1/2 left-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-ivory-50 bg-forest-900 text-ivory-50 group-has-[input:focus-visible]/compare:outline-2 group-has-[input:focus-visible]/compare:outline-offset-2 group-has-[input:focus-visible]/compare:outline-gold-300">
+        <div className="pointer-events-none absolute inset-y-0 w-px bg-paper" style={{ left: `${position}%` }} aria-hidden="true">
+          <span className="absolute top-1/2 left-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-paper bg-pine-700 text-paper group-has-[input:focus-visible]/compare:outline-2 group-has-[input:focus-visible]/compare:outline-offset-2 group-has-[input:focus-visible]/compare:outline-clay-300">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
               <path d="M7.5 5 2.5 10l5 5M12.5 5l5 5-5 5" />
             </svg>

@@ -1,13 +1,16 @@
-import type { DemoPlot, GalleryItem, Testimonial } from '../types';
+import type { DemoPlot, FarmingVideo, GalleryItem, SiteSettings, Testimonial } from '../types';
 
 import { photo } from './media';
-import { galleryCategories } from './taxonomy';
+import { articleCategories, galleryCategories } from './taxonomy';
 
 /*
  * TEST FIXTURES ONLY. Loaded when E2E_FIXTURES=1 outside Vercel, so automated
  * tests can exercise the video dialog, the comparison slider and the lightbox.
  * Every label says "Test fixture" so these can never pass for real content.
  */
+
+/* Contact numbers that cannot reach anyone (an Indian mobile never starts with 0). */
+export const fixtureContact: SiteSettings['contact'] = { phone: '+910000000000', whatsapp: '+910000000000' };
 
 export const fixtureTestimonials: Testimonial[] = [
   {
@@ -64,5 +67,29 @@ export const fixtureGallery: GalleryItem[] = [
     title: 'Test fixture image two',
     category: galleryCategories.fields,
     order: 2,
+  },
+];
+
+export const fixtureFarmingVideos: FarmingVideo[] = [
+  {
+    id: 'fixture-video-1',
+    status: 'published',
+    title: 'Test fixture video',
+    slug: 'test-fixture-video',
+    video: { provider: 'youtube', id: 'aqz-KE-bpKQ', url: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ', durationSeconds: 60 },
+    poster: photo('turmeric-black-soil', { alt: 'Test fixture video cover.' }),
+    topic: articleCategories.soilHealth,
+    crop: { slug: 'turmeric', title: 'Turmeric' },
+    presenter: 'Test fixture presenter',
+    role: 'farmer',
+    district: 'Test district',
+    state: 'Test state',
+    language: 'Marathi',
+    summary: 'Test fixture summary for a farmer video.',
+    points: ['Test fixture point one.', 'Test fixture point two.'],
+    products: [{ slug: 'halad-special', name: 'Halad Special' }],
+    publishedAt: '2026-11-01',
+    featured: true,
+    order: 1,
   },
 ];

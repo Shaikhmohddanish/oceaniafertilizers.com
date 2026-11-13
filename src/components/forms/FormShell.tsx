@@ -30,8 +30,8 @@ type FormShellProps = {
   pendingLabel?: string;
   tone?: 'light' | 'dark';
   children: ReactNode;
-  /** Extra content under the success message, such as next steps. */
-  successExtra?: ReactNode;
+  /** Extra content under the success message, such as next steps. A function receives the result, for its reference. */
+  successExtra?: ReactNode | ((state: FormState) => ReactNode);
   successTitle?: string;
   /** Contact options shown when something goes wrong. */
   fallback?: ReactNode;
@@ -166,28 +166,28 @@ export function FormShell({
         id={id}
         tabIndex={-1}
         role="status"
-        className={`outline-none ${tone === 'dark' ? 'text-ivory-50' : 'text-ink-900'} ${className}`}
+        className={`outline-none ${tone === 'dark' ? 'text-paper' : 'text-ink-900'} ${className}`}
       >
-        <p className={`type-label ${tone === 'dark' ? 'text-gold-300' : 'text-gold-700'}`}>
+        <p className={`type-label ${tone === 'dark' ? 'text-clay-300' : 'text-clay-700'}`}>
           {state.status === 'success' ? 'Received' : 'Already received'}
         </p>
         <p className={`mt-3 font-display font-bold ${compact ? 'text-[1.5rem]' : 'type-h3'}`}>
           {state.status === 'success' ? successTitle : 'We have this already'}
         </p>
-        <p className={`mt-3 max-w-[48ch] ${tone === 'dark' ? 'text-sage-200' : 'text-ink-700'}`}>{state.message}</p>
+        <p className={`mt-3 max-w-[48ch] ${tone === 'dark' ? 'text-pine-100' : 'text-ink-700'}`}>{state.message}</p>
         {state.reference ? (
-          <p className={`type-small mt-4 ${tone === 'dark' ? 'text-sage-300' : 'text-ink-500'}`}>
+          <p className={`type-small mt-4 ${tone === 'dark' ? 'text-pine-200' : 'text-ink-500'}`}>
             Your reference: <span className="type-numeral font-semibold text-current">{state.reference}</span>
           </p>
         ) : null}
-        {state.status === 'success' ? successExtra : null}
+        {state.status === 'success' ? (typeof successExtra === 'function' ? successExtra(state) : successExtra) : null}
       </div>
     );
   }
 
   const showSummary = errorList.length > 0 || state.status === 'error' || state.status === 'rate_limited';
   const summaryTone =
-    tone === 'dark' ? 'border-gold-300/60 bg-forest-900 text-ivory-50' : 'border-error-700/40 bg-error-100 text-ink-900';
+    tone === 'dark' ? 'border-clay-300/60 bg-pine-700 text-paper' : 'border-error-700/40 bg-error-100 text-ink-900';
 
   return (
     <FormContext.Provider value={{ id, errors, values: state.values ?? {}, tone }}>
@@ -267,7 +267,7 @@ export function FormShell({
             <span>{pending ? pendingLabel : waitingForCheck ? 'Checking...' : submitLabel}</span>
             <ArrowRightIcon size={18} />
           </button>
-          <p aria-live="polite" className={`type-caption ${tone === 'dark' ? 'text-sage-300' : 'text-ink-500'}`}>
+          <p aria-live="polite" className={`type-caption ${tone === 'dark' ? 'text-pine-200' : 'text-ink-500'}`}>
             {pending ? 'Sending your details securely.' : waitingForCheck ? 'Running a quick security check.' : ''}
           </p>
         </div>

@@ -106,6 +106,8 @@ export type SiteSettings = {
   };
   social: { platform: SocialPlatform; url: string }[];
   whatsappChannelUrl?: string;
+  /** Languages the team can give advice in, for example "English and Marathi". */
+  adviceLanguages?: string;
   logo?: ImageAsset;
 };
 
@@ -182,6 +184,35 @@ export type Testimonial = {
   uploadedOn?: string;
   season?: string;
   demoPlotId?: string;
+  featured: boolean;
+  order: number;
+};
+
+/** Who is speaking in a farmer video. */
+export type VideoPresenterRole = 'farmer' | 'agronomist' | 'team';
+
+/** A short video about a farming practice, from a farmer or the Oceania team. */
+export type FarmingVideo = {
+  id: string;
+  status: PublicationStatus;
+  title: string;
+  slug: string;
+  video: VideoSource;
+  poster?: ImageAsset;
+  topic?: ArticleCategory;
+  crop?: Crop;
+  /** Name exactly as the presenter agreed to show it. */
+  presenter: string;
+  role: VideoPresenterRole;
+  district?: string;
+  state?: string;
+  language: string;
+  summary: string;
+  /** "What you will learn": short points. */
+  points: string[];
+  transcript?: RichText;
+  products: ProductRef[];
+  publishedAt: string;
   featured: boolean;
   order: number;
 };
@@ -266,22 +297,21 @@ export type Article = ArticleSummary & {
 
 export type HomePage = {
   hero: {
-    eyebrow?: string;
     headline: string;
+    /** One short promise: what Oceania offers. */
     standfirst: string;
     image: ImageAsset;
     primaryCta: CtaLink;
     secondaryCta: CtaLink;
   };
-  pillars: string[];
-  chapters: { label: string; title: string; body: string; image: ImageAsset }[];
+  learn: { headline: string; intro: string };
   products: { eyebrow: string; headline: string; intro: string; featuredSlugs: string[] };
   farmer: {
     eyebrow: string;
     headline: string;
     body: string;
     image: ImageAsset;
-    points: { part: string; meaning: string }[];
+    points: { title: string; body: string }[];
     cta: CtaLink;
   };
   stories: { eyebrow: string; headline: string };
@@ -292,7 +322,6 @@ export type HomePage = {
     intro: string;
     topics: { title: string; body: string }[];
   };
-  partner: { eyebrow: string; headline: string; body: string; image: ImageAsset; cta: CtaLink };
   contact: { eyebrow: string; headline: string; body: string };
   seo?: Seo;
 };
@@ -301,7 +330,8 @@ export type LeadershipMember = { name: string; role: string; bio: RichText; phot
 
 export type AboutPage = {
   hero: { headline: string; standfirst: string; image: ImageAsset };
-  purpose: { headline: string; body: RichText };
+  /** statements: the client's three "We ..." lines. */
+  purpose: { headline: string; body: RichText; statements: string[] };
   approach: { headline: string; intro: string; steps: { title: string; body: string }[] };
   principles: { headline: string; items: { title: string; body: string }[] };
   story?: { headline: string; body: RichText; image?: ImageAsset };
@@ -323,7 +353,7 @@ export type PartnerProgramme = {
 };
 
 /** The editable opening of each listing page. */
-export type PageIntroKey = 'products' | 'demoPlots' | 'farmerStories' | 'gallery' | 'insights' | 'contact' | 'join';
+export type PageIntroKey = 'products' | 'fieldVisits' | 'farmerStories' | 'gallery' | 'learn' | 'contact' | 'join' | 'advice';
 
 export type PageIntro = {
   key: PageIntroKey;

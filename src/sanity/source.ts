@@ -8,6 +8,7 @@ import type {
   Article,
   Crop,
   DemoPlot,
+  FarmingVideo,
   Faq,
   GalleryItem,
   ImageAsset,
@@ -150,6 +151,7 @@ export const sanitySource: ContentSource = {
       },
       social: ((raw.social as { platform: never; url: string }[]) ?? []).filter((item) => item.platform && item.url),
       whatsappChannelUrl: (raw.whatsappChannelUrl as string) || undefined,
+      adviceLanguages: (raw.adviceLanguages as string) || undefined,
       logo: mapImage(raw.logo),
     };
   },
@@ -158,29 +160,20 @@ export const sanitySource: ContentSource = {
     const raw = await sanityFetch<Record<string, any> | null>(`*[_id == "homePage"][0]{
       ...,
       hero{ ..., image${IMAGE} },
-      chapters[]{ ..., image${IMAGE} },
       products{ ..., "featuredSlugs": featured[]->slug.current },
-      farmer{ ..., image${IMAGE} },
-      partner{ ..., image${IMAGE} }
+      farmer{ ..., image${IMAGE} }
     }`);
     const fallback = await localSource.getHomePage();
     if (!raw?.hero) return fallback;
     return {
       hero: {
-        eyebrow: raw.hero.eyebrow,
         headline: raw.hero.headline,
         standfirst: raw.hero.standfirst,
-        image: mapImage(raw.hero.image, raw.hero.backdrop) ?? fallback.hero.image,
+        image: mapImage(raw.hero.image) ?? fallback.hero.image,
         primaryCta: raw.hero.primaryCta ?? fallback.hero.primaryCta,
         secondaryCta: raw.hero.secondaryCta ?? fallback.hero.secondaryCta,
       },
-      pillars: raw.pillars ?? fallback.pillars,
-      chapters: (raw.chapters ?? []).map((chapter: any, index: number) => ({
-        label: chapter.label,
-        title: chapter.title,
-        body: chapter.body,
-        image: mapImage(chapter.image) ?? fallback.chapters[index]?.image ?? fallback.hero.image,
-      })),
+      learn: { ...fallback.learn, ...raw.learn },
       products: {
         eyebrow: raw.products?.eyebrow ?? fallback.products.eyebrow,
         headline: raw.products?.headline ?? fallback.products.headline,
@@ -191,13 +184,12 @@ export const sanitySource: ContentSource = {
         ...fallback.farmer,
         ...raw.farmer,
         image: mapImage(raw.farmer?.image) ?? fallback.farmer.image,
-        points: raw.farmer?.points ?? fallback.farmer.points,
+        points: raw.farmer?.points?.map((point: any) => ({ title: point.title, body: point.body })) ?? fallback.farmer.points,
         cta: raw.farmer?.cta ?? fallback.farmer.cta,
       },
       stories: { ...fallback.stories, ...raw.stories },
       results: { ...fallback.results, ...raw.results },
       practices: { ...fallback.practices, ...raw.practices, topics: raw.practices?.topics ?? fallback.practices.topics },
-      partner: { ...fallback.partner, ...raw.partner, image: mapImage(raw.partner?.image) ?? fallback.partner.image, cta: raw.partner?.cta ?? fallback.partner.cta },
       contact: { ...fallback.contact, ...raw.contact },
       seo: raw.seo ?? fallback.seo,
     };
@@ -211,7 +203,11 @@ export const sanitySource: ContentSource = {
     if (!raw?.hero) return fallback;
     return {
       hero: { ...raw.hero, image: mapImage(raw.hero.image) ?? fallback.hero.image },
-      purpose: { headline: raw.purpose?.headline ?? fallback.purpose.headline, body: mapRichText(raw.purpose?.body) },
+      purpose: {
+        headline: raw.purpose?.headline ?? fallback.purpose.headline,
+        body: mapRichText(raw.purpose?.body),
+        statements: raw.purpose?.statements ?? fallback.purpose.statements,
+      },
       approach: { headline: raw.approach?.headline, intro: raw.approach?.intro, steps: raw.approach?.steps ?? [] },
       principles: { headline: raw.principles?.headline, items: raw.principles?.items ?? [] },
       story: raw.story?.headline
@@ -331,6 +327,46 @@ export const sanitySource: ContentSource = {
           recordedOn: row.recordedOn ?? undefined,
           uploadedOn: row.uploadedOn ?? undefined,
           demoPlotId: row.demoPlotId ?? undefined,
+          featured: Boolean(row.featured),
+          order: index,
+        },
+      ];
+    });
+  },
+
+  async getFarmingVideos() {
+    const rows = await sanityFetch<Record<string, any>[]>(`*[_type == "farmingVideo" && consent == true && visible != false && defined(slug.current)] | order(orderRank asc) {
+      ${STATUS}, title, "slug": slug.current, presenter, role, district, state, language, summary, publishedAt, featured, videoUrl, durationSeconds,
+      "points": coalesce(points, []),
+      "topic": topic->${TERM},
+      "crop": crop->{ title, "slug": slug.current },
+      "products": coalesce(products[]->${PRODUCT_REF}, []),
+      "poster": poster${IMAGE},
+      "transcript": transcript${RICH}
+    }`);
+    return rows.flatMap((row, index): FarmingVideo[] => {
+      const video = parseVideo(row.videoUrl, row.durationSeconds ?? undefined);
+      if (!video) return [];
+      return [
+        {
+          id: row.id,
+          status: status(row.originalId),
+          title: row.title,
+          slug: row.slug,
+          video,
+          poster: mapImage(row.poster),
+          topic: row.topic ?? undefined,
+          crop: row.crop ?? undefined,
+          presenter: row.presenter,
+          role: row.role ?? 'farmer',
+          district: row.district ?? undefined,
+          state: row.state ?? undefined,
+          language: row.language ?? 'English',
+          summary: row.summary,
+          points: row.points,
+          transcript: optionalRichText(row.transcript),
+          products: row.products,
+          publishedAt: row.publishedAt,
           featured: Boolean(row.featured),
           order: index,
         },

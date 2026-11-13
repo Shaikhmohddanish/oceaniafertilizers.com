@@ -9,11 +9,15 @@ type Size = 'md' | 'sm';
 const base =
   'has-arrow inline-flex items-center justify-center gap-3 rounded-[2px] font-sans font-bold tracking-[0.01em] whitespace-nowrap transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60';
 
+/*
+ * Clay marks the action. On paper the clay fill alone is too close to the
+ * background, so it carries a darker clay edge (3.6:1); on pine it stands on its own.
+ */
 const variants: Record<Variant, string> = {
-  primary: 'bg-forest-800 text-ivory-50 hover:bg-forest-900',
-  secondary: 'border border-[color:var(--line-strong)] text-ink-900 hover:border-ink-900',
-  light: 'bg-ivory-50 text-forest-900 hover:bg-white',
-  'outline-light': 'border border-ivory-50/40 text-ivory-50 hover:border-ivory-50',
+  primary: 'border border-clay-600 bg-clay-300 text-ink-900 hover:bg-clay-400',
+  secondary: 'border border-pine-700 text-pine-700 hover:bg-pine-700 hover:text-paper',
+  light: 'bg-clay-300 text-ink-900 hover:bg-clay-400',
+  'outline-light': 'border border-paper/50 text-paper hover:border-paper',
 };
 
 const sizes: Record<Size, string> = {

@@ -2,11 +2,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { products } from '@/content/local/products';
 import { siteSettings } from '@/content/local/settings';
-import type { Testimonial } from '@/content/types';
+import type { FarmingVideo, Testimonial } from '@/content/types';
+import { contactActions } from '@/lib/contact';
+import { canOrder } from '@/lib/ordering';
 import { csvCell } from '@/server/admin/leads';
-import { leadEmailHtml, leadEmailSubject, leadEmailText, type LeadEmailInput } from '@/server/notify/lead-email';
+import { leadForms } from '@/server/db/schema';
+import { formLabels, leadEmailHtml, leadEmailSubject, leadEmailText, type LeadEmailInput } from '@/server/notify/lead-email';
 import { languageAlternates, locales } from '@/lib/i18n';
-import { organizationJsonLd, productJsonLd, videoJsonLd } from '@/lib/seo/json-ld';
+import { farmingVideoJsonLd, organizationJsonLd, productJsonLd, videoJsonLd } from '@/lib/seo/json-ld';
 
 describe('structured data', () => {
   it('never invents offers, prices or ratings for products', () => {
@@ -69,6 +72,68 @@ describe('CSV export', () => {
     expect(csvCell('+919876543210')).toBe('"\'+919876543210"');
     expect(csvCell(null)).toBe('""');
     expect(csvCell({ crop: 'Cotton' })).toBe('"{""crop"":""Cotton""}"');
+  });
+});
+
+describe('farmer video structured data', () => {
+  const video: FarmingVideo = {
+    id: 'video-1',
+    status: 'published',
+    title: 'Reading a soil test',
+    slug: 'reading-a-soil-test',
+    video: { provider: 'youtube', id: 'abc123', url: 'https://www.youtube.com/watch?v=abc123', durationSeconds: 95 },
+    presenter: 'A turmeric grower',
+    role: 'farmer',
+    language: 'Marathi',
+    summary: 'How to read the main numbers on a soil test report.',
+    points: [],
+    products: [],
+    publishedAt: '2026-11-01',
+    featured: false,
+    order: 0,
+  };
+
+  it('describes a complete video', () => {
+    expect(farmingVideoJsonLd(video)).toMatchObject({
+      '@type': 'VideoObject',
+      name: 'Reading a soil test',
+      uploadDate: '2026-11-01',
+      embedUrl: 'https://www.youtube-nocookie.com/embed/abc123',
+      duration: 'PT1M35S',
+    });
+  });
+
+  it('is omitted when there is no thumbnail', () => {
+    expect(farmingVideoJsonLd({ ...video, video: { provider: 'vimeo', id: '123', url: 'https://vimeo.com/123' } })).toBeNull();
+  });
+});
+
+describe('contact actions', () => {
+  it('offers only the advice form until numbers are entered', () => {
+    expect(contactActions({}).map((action) => action.channel)).toEqual(['advice']);
+  });
+
+  it('adds WhatsApp and call once their numbers exist', () => {
+    const actions = contactActions({ whatsapp: '+919800000001', phone: '+919800000002' }, 'Hello');
+    expect(actions.map((action) => action.channel)).toEqual(['whatsapp', 'call', 'advice']);
+    expect(actions[0]?.href).toBe('https://wa.me/919800000001?text=Hello');
+    expect(actions[1]?.href).toBe('tel:+919800000002');
+  });
+});
+
+describe('ordering', () => {
+  it('allows an order only for a published product with a pack size', () => {
+    expect(canOrder({ status: 'published', packSizes: ['5 litre can'] })).toBe(true);
+    expect(canOrder({ status: 'pending', packSizes: ['5 litre can'] })).toBe(false);
+    expect(canOrder({ status: 'published', packSizes: [] })).toBe(false);
+  });
+});
+
+describe('lead form labels', () => {
+  it('name every kind of lead, including orders and field visits', () => {
+    for (const form of leadForms) expect(formLabels[form]).toBeTruthy();
+    expect(formLabels.order_request).toBe('Order request');
+    expect(formLabels.field_visit).toBe('Field visit request');
   });
 });
 

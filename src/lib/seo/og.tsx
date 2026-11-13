@@ -12,10 +12,10 @@ import { ImageResponse } from 'next/og';
 export const OG_SIZE = { width: 1200, height: 630 };
 
 const colors = {
-  ground: '#0f1e17',
-  ivory: '#f7f3ea',
-  sage: '#b4bda7',
-  gold: '#e2c988',
+  ground: '#24483c',
+  ivory: '#f5f1e8',
+  sage: '#cfdcd4',
+  gold: '#edb58a',
 };
 
 async function fonts() {

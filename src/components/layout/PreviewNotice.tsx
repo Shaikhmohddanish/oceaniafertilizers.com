@@ -4,9 +4,9 @@
  */
 export function PreviewNotice() {
   return (
-    <div className="border-b border-[color:var(--line)] bg-ivory-100">
+    <div className="border-b border-[color:var(--line)] bg-paper-deep">
       <p className="container-site type-caption flex min-h-9 flex-wrap items-center gap-x-3 gap-y-1 py-2 text-ink-700">
-        <span className="type-label text-gold-700">Preview build</span>
+        <span className="type-label text-clay-700">Preview build</span>
         <span>
           Items marked Pending approval are not yet confirmed by Oceania and are hidden on the live site.
         </span>

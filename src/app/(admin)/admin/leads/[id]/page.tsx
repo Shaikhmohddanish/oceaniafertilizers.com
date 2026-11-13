@@ -31,6 +31,11 @@ const detailLabels: Record<string, string> = {
   gstin: 'GSTIN',
   experience: 'Experience',
   experienceSummary: 'About their business',
+  pack: 'Pack',
+  quantity: 'Number of packs',
+  notes: 'Notes',
+  visitType: 'Asked for',
+  preferredTime: 'When suits them',
 };
 
 type Props = { params: Promise<{ id: string }>; searchParams: Promise<Record<string, string | undefined>> };
@@ -58,18 +63,18 @@ export default async function LeadPage({ params, searchParams }: Props) {
     <>
       <AdminHeader />
       <main className="mx-auto max-w-4xl px-6 py-10">
-        <Link href="/admin/leads" className="type-small font-medium text-forest-800 underline">
+        <Link href="/admin/leads" className="type-small font-medium text-pine-700 underline">
           All leads
         </Link>
         <div className="mt-6 flex flex-wrap items-baseline justify-between gap-4">
-          <h1 className="type-h2 text-forest-900">{lead.fullName}</h1>
+          <h1 className="type-h2 text-pine-700">{lead.fullName}</h1>
           <p className="type-numeral text-ink-700">{lead.reference}</p>
         </div>
         <p className="mt-2 text-ink-700">
           {formLabels[lead.form]}, received {ist.format(lead.createdAt)}
         </p>
         {query.saved ? (
-          <p role="status" className="type-small mt-4 border-l-2 border-forest-700 bg-ivory-100 px-4 py-2">
+          <p role="status" className="type-small mt-4 border-l-2 border-pine-600 bg-paper-deep px-4 py-2">
             Saved.
           </p>
         ) : null}
@@ -134,7 +139,7 @@ export default async function LeadPage({ params, searchParams }: Props) {
             />
             <p className="type-caption mt-1 text-ink-500">Only visible to the team.</p>
           </div>
-          <button type="submit" className="inline-flex min-h-11 items-center rounded-[2px] bg-forest-800 px-5 font-medium text-ivory-50 hover:bg-forest-900">
+          <button type="submit" className="inline-flex min-h-11 items-center rounded-[2px] bg-pine-700 px-5 font-medium text-paper hover:bg-pine-900">
             Save
           </button>
         </form>
@@ -158,7 +163,7 @@ export default async function LeadPage({ params, searchParams }: Props) {
           </label>
           <button
             type="submit"
-            className="mt-5 inline-flex min-h-11 items-center rounded-[2px] border border-error-700 px-5 font-medium text-error-700 hover:bg-error-700 hover:text-ivory-50"
+            className="mt-5 inline-flex min-h-11 items-center rounded-[2px] border border-error-700 px-5 font-medium text-error-700 hover:bg-error-700 hover:text-paper"
           >
             Delete permanently
           </button>

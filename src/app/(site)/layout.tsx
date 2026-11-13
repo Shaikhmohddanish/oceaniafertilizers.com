@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { Analytics } from '@/components/analytics/Analytics';
 import { DraftModeBar } from '@/components/layout/DraftModeBar';
 import { Footer } from '@/components/layout/Footer';
+import { MobileActionBar } from '@/components/layout/MobileActionBar';
 import { PreviewNotice } from '@/components/layout/PreviewNotice';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SkipLink } from '@/components/layout/SkipLink';
@@ -43,6 +44,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         {children}
       </main>
       <Footer settings={settings} />
+      <MobileActionBar contact={settings.contact} />
       <RevealObserver />
       <DraftModeBar />
       <JsonLd data={[organizationJsonLd(settings), websiteJsonLd(settings)]} />

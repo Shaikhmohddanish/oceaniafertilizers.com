@@ -14,7 +14,7 @@ const experienceOptions = experienceLevels.map((value) => ({ value, label: exper
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <fieldset className="border-t border-[color:var(--line-strong)] pt-8 first:border-t-0 first:pt-0">
-      <legend className="type-h3 float-left mb-6 w-full text-forest-900">{title}</legend>
+      <legend className="type-h3 float-left mb-6 w-full text-pine-700">{title}</legend>
       <div className="clear-both grid gap-x-6 gap-y-6 sm:grid-cols-2">{children}</div>
     </fieldset>
   );

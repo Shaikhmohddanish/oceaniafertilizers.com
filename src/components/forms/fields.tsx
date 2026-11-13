@@ -42,11 +42,11 @@ function controlClass(tone: Tone, invalid: boolean) {
   const base =
     'block w-full rounded-[2px] border px-4 text-[1rem] transition-colors duration-150 outline-none focus-visible:outline-2 focus-visible:outline-offset-2';
   if (tone === 'dark') {
-    return `${base} bg-transparent text-ivory-50 placeholder:text-sage-400 focus:border-ivory-50 focus-visible:outline-gold-300 ${
-      invalid ? 'border-gold-300' : 'border-[color:var(--line-control-on-dark)] hover:border-ivory-50/70'
+    return `${base} bg-transparent text-paper placeholder:text-pine-300 focus:border-paper focus-visible:outline-clay-300 ${
+      invalid ? 'border-clay-300' : 'border-[color:var(--line-control-on-dark)] hover:border-paper/70'
     }`;
   }
-  return `${base} bg-white/70 text-ink-900 placeholder:text-ink-500 focus:border-forest-800 focus-visible:outline-gold-700 ${
+  return `${base} bg-white/70 text-ink-900 placeholder:text-ink-500 focus:border-pine-700 focus-visible:outline-clay-700 ${
     invalid ? 'border-error-700' : 'border-[color:var(--line-control)] hover:border-ink-700'
   }`;
 }
@@ -64,8 +64,8 @@ export function FieldLabel({
   tone?: Tone;
   as?: 'label' | 'legend';
 }) {
-  const color = tone === 'dark' ? 'text-ivory-50' : 'text-ink-900';
-  const muted = tone === 'dark' ? 'text-sage-300' : 'text-ink-500';
+  const color = tone === 'dark' ? 'text-paper' : 'text-ink-900';
+  const muted = tone === 'dark' ? 'text-pine-200' : 'text-ink-500';
   return (
     <Tag htmlFor={Tag === 'label' ? htmlFor : undefined} className={`type-small block font-bold ${color}`}>
       {children}
@@ -77,7 +77,7 @@ export function FieldLabel({
 function Hint({ id, children, tone }: { id: string; children?: ReactNode; tone: Tone }) {
   if (!children) return null;
   return (
-    <p id={id} className={`type-caption mt-1 ${tone === 'dark' ? 'text-sage-300' : 'text-ink-500'}`}>
+    <p id={id} className={`type-caption mt-1 ${tone === 'dark' ? 'text-pine-200' : 'text-ink-500'}`}>
       {children}
     </p>
   );
@@ -86,7 +86,7 @@ function Hint({ id, children, tone }: { id: string; children?: ReactNode; tone: 
 export function FieldError({ id, message, tone = 'light' }: { id: string; message?: string; tone?: Tone }) {
   if (!message) return null;
   return (
-    <p id={id} className={`type-small mt-2 font-bold ${tone === 'dark' ? 'text-gold-300' : 'text-error-700'}`}>
+    <p id={id} className={`type-small mt-2 font-bold ${tone === 'dark' ? 'text-clay-300' : 'text-error-700'}`}>
       <span className="sr-only">Error: </span>
       {message}
     </p>
@@ -247,7 +247,7 @@ export function SelectField({
           ))}
         </select>
         <ChevronDownIcon
-          className={`pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 ${field.tone === 'dark' ? 'text-ivory-50' : 'text-ink-700'}`}
+          className={`pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 ${field.tone === 'dark' ? 'text-paper' : 'text-ink-700'}`}
         />
       </div>
       <FieldError id={field.errorId} message={field.error} tone={field.tone} />
@@ -267,7 +267,7 @@ type CheckboxFieldProps = Messages & {
 export function CheckboxField({ name, label, optional, defaultChecked, requiredMessage, className = '' }: CheckboxFieldProps) {
   const field = useField(name);
   const checked = field.value !== undefined ? field.value === 'yes' : defaultChecked;
-  const textColor = field.tone === 'dark' ? 'text-sage-200' : 'text-ink-700';
+  const textColor = field.tone === 'dark' ? 'text-pine-100' : 'text-ink-700';
   return (
     <div className={className}>
       <div className="flex items-start gap-3">
@@ -281,7 +281,7 @@ export function CheckboxField({ name, label, optional, defaultChecked, requiredM
           aria-invalid={field.error ? true : undefined}
           aria-describedby={field.error ? field.errorId : undefined}
           data-msg-required={requiredMessage}
-          className="h-6 w-6 shrink-0 cursor-pointer accent-forest-800"
+          className="h-6 w-6 shrink-0 cursor-pointer accent-pine-700"
         />
         <label htmlFor={field.id} className={`type-small cursor-pointer ${textColor}`}>
           {label}
@@ -338,7 +338,7 @@ export function ChoiceGroup({
             <label
               key={option.value}
               htmlFor={optionId}
-              className="flex cursor-pointer items-start gap-3 border border-[color:var(--line-strong)] bg-white/50 px-4 py-3 transition-colors hover:border-ink-700 has-[:checked]:border-forest-800 has-[:checked]:bg-white"
+              className="flex cursor-pointer items-start gap-3 border border-[color:var(--line-strong)] bg-white/50 px-4 py-3 transition-colors hover:border-ink-700 has-[:checked]:border-pine-700 has-[:checked]:bg-white"
             >
               <input
                 id={optionId}
@@ -348,7 +348,7 @@ export function ChoiceGroup({
                 required={type === 'radio' && !optional && index === 0 ? true : undefined}
                 defaultChecked={selected.includes(option.value)}
                 data-msg-required={requiredMessage}
-                className="mt-0.5 h-6 w-6 shrink-0 cursor-pointer accent-forest-800"
+                className="mt-0.5 h-6 w-6 shrink-0 cursor-pointer accent-pine-700"
               />
               <span>
                 <span className="type-small block font-medium text-ink-900">{option.label}</span>

@@ -16,16 +16,16 @@ export const pageIntros: Record<PageIntroKey, PageIntro> = {
         'The Oceania Fertilizers range of agricultural inputs for Indian farms, including Halad Special bio-stimulant and WAVES mycorrhizal biofertilizer.',
     },
   },
-  demoPlots: {
-    key: 'demoPlots',
-    title: 'Demo plots,\ndocumented.',
+  fieldVisits: {
+    key: 'fieldVisits',
+    title: 'Field visits\nand demos.',
     standfirst:
-      'Each record shows a real plot: the crop, the products used, what they were compared with, and what was observed. Published only with the farmer\'s permission.',
+      'Ask our team to visit your farm, or to run a demo plot on it. Below are the demo plots we have documented, each published with the farmer\'s permission.',
     image: photo('cotton-raichur', { focal: { x: 0.5, y: 0.5 } }),
     seo: {
-      title: 'Demo plots and field results',
+      title: 'Field visits and demo plots',
       description:
-        'Documented demo plots from farms using Oceania Fertilizers inputs: crop, treatment, comparison plot, season and observed results.',
+        'Book a field visit or a demo plot with Oceania Fertilizers, and see documented demo plots: crop, treatment, comparison plot and observed results.',
     },
   },
   farmerStories: {
@@ -49,16 +49,16 @@ export const pageIntros: Record<PageIntroKey, PageIntro> = {
       description: 'Photographs from Oceania Fertilizers field visits, demonstrations, farmer meetings and products.',
     },
   },
-  insights: {
-    key: 'insights',
-    title: 'Better decisions\nstart here.',
+  learn: {
+    key: 'learn',
+    title: 'Learn farming\ntogether.', // client, 7 November 2026
     standfirst:
-      'Practical notes on soil health, crop nutrition, water and biological inputs. Written to be useful, with sources you can check.',
+      'Short videos and notes on soil, water, nutrition and crop care, from farmers and our team. Written and recorded to be useful, with sources you can check.',
     image: photo('wheat-punjab', { focal: { x: 0.5, y: 0.5 } }),
     seo: {
-      title: 'Insights: soil health, crop nutrition and good practice',
+      title: 'Learn farming together: farmer videos and guides',
       description:
-        'Practical articles on soil health, crop nutrition, fertigation and biological inputs for Indian farms, with sources.',
+        'Farmer videos and practical guides on soil health, crop nutrition, water and biological inputs for Indian farms.',
     },
   },
   contact: {
@@ -74,7 +74,7 @@ export const pageIntros: Record<PageIntroKey, PageIntro> = {
   },
   join: {
     key: 'join',
-    title: 'For farmers\nwho want to know more.',
+    title: 'For farmers\nwho keep learning.',
     standfirst:
       'Register with the Oceania farmer community to hear about guidance for your crop, demo plots and farmer meetings, in the ways you choose.',
     image: photo('sowing-raichur', { focal: { x: 0.45, y: 0.65 } }),
@@ -82,6 +82,17 @@ export const pageIntros: Record<PageIntroKey, PageIntro> = {
       title: 'Join the Oceania farmer community',
       description:
         'Register as an Oceania farmer for crop guidance, demo plots and farmer meetings. You choose how we contact you.',
+    },
+  },
+  advice: {
+    key: 'advice',
+    title: 'Get crop\nadvice.',
+    standfirst:
+      'Tell us your crop, where you farm and what you are seeing in the field. Our team will call you back with advice for your crop.',
+    seo: {
+      title: 'Get crop advice',
+      description:
+        'Ask Oceania Fertilizers for crop advice. Tell us your crop and what you are seeing; our team calls you back.',
     },
   },
 };

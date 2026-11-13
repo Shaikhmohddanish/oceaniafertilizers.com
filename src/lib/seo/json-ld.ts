@@ -1,4 +1,4 @@
-import type { Article, ImageAsset, Product, SiteSettings, Testimonial } from '@/content/types';
+import type { Article, FarmingVideo, ImageAsset, Product, RichText, SiteSettings, Testimonial, VideoSource } from '@/content/types';
 import { toPlainText, truncate } from '@/content/text';
 import { absoluteUrl, siteUrl } from '@/lib/site-config';
 
@@ -111,8 +111,8 @@ export function articleJsonLd(article: Article) {
     '@type': 'Article',
     headline: article.title,
     description: article.excerpt,
-    url: absoluteUrl(`/insights/${article.slug}`),
-    mainEntityOfPage: absoluteUrl(`/insights/${article.slug}`),
+    url: absoluteUrl(`/learn/${article.slug}`),
+    mainEntityOfPage: absoluteUrl(`/learn/${article.slug}`),
     inLanguage: 'en-IN',
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
@@ -128,31 +128,60 @@ function isoDuration(totalSeconds: number) {
   return `PT${minutes > 0 ? `${minutes}M` : ''}${seconds}S`;
 }
 
-export function videoEmbedUrl(video: Testimonial['video']) {
+export function videoEmbedUrl(video: VideoSource) {
   return video.provider === 'youtube'
     ? `https://www.youtube-nocookie.com/embed/${video.id}`
     : `https://player.vimeo.com/video/${video.id}`;
 }
 
-/** Returns null unless every field Google requires for VideoObject is present. */
-export function videoJsonLd(testimonial: Testimonial) {
-  const thumbnail =
-    imageUrl(testimonial.poster) ??
-    (testimonial.video.provider === 'youtube' ? `https://i.ytimg.com/vi/${testimonial.video.id}/hqdefault.jpg` : undefined);
-  const description = testimonial.summary ?? testimonial.quote;
-  if (!thumbnail || !description || !testimonial.uploadedOn) return null;
+type VideoObjectInput = {
+  name: string;
+  description?: string;
+  video: VideoSource;
+  poster?: ImageAsset;
+  uploadDate?: string;
+  transcript?: RichText;
+};
 
-  const place = [testimonial.district, testimonial.state].filter(Boolean).join(', ');
+/** Returns null unless every field Google requires for VideoObject is present. */
+function videoObjectJsonLd({ name, description, video, poster, uploadDate, transcript }: VideoObjectInput) {
+  const thumbnail = imageUrl(poster) ?? (video.provider === 'youtube' ? `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg` : undefined);
+  if (!thumbnail || !description || !uploadDate) return null;
   return {
     '@context': CONTEXT,
     '@type': 'VideoObject',
-    name: `${testimonial.farmerName}${place ? `, ${place}` : ''}: a farmer's experience`,
+    name,
     description,
     thumbnailUrl: [thumbnail],
-    uploadDate: testimonial.uploadedOn,
-    embedUrl: videoEmbedUrl(testimonial.video),
-    contentUrl: testimonial.video.url,
-    ...(testimonial.video.durationSeconds ? { duration: isoDuration(testimonial.video.durationSeconds) } : {}),
-    ...(testimonial.transcript ? { transcript: toPlainText(testimonial.transcript) } : {}),
+    uploadDate,
+    embedUrl: videoEmbedUrl(video),
+    contentUrl: video.url,
+    ...(video.durationSeconds ? { duration: isoDuration(video.durationSeconds) } : {}),
+    ...(transcript ? { transcript: toPlainText(transcript) } : {}),
   };
+}
+
+/** A farmer story. Null unless the upload date, a description and a thumbnail exist. */
+export function videoJsonLd(testimonial: Testimonial) {
+  const place = [testimonial.district, testimonial.state].filter(Boolean).join(', ');
+  return videoObjectJsonLd({
+    name: `${testimonial.farmerName}${place ? `, ${place}` : ''}: a farmer's experience`,
+    description: testimonial.summary ?? testimonial.quote,
+    video: testimonial.video,
+    poster: testimonial.poster,
+    uploadDate: testimonial.uploadedOn,
+    transcript: testimonial.transcript,
+  });
+}
+
+/** A farmer video on its own page. */
+export function farmingVideoJsonLd(video: FarmingVideo) {
+  return videoObjectJsonLd({
+    name: video.title,
+    description: video.summary,
+    video: video.video,
+    poster: video.poster,
+    uploadDate: video.publishedAt,
+    transcript: video.transcript,
+  });
 }

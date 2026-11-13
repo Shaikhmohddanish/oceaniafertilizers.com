@@ -6,8 +6,10 @@ import {
   farmCallbackSchema,
   farmerSchema,
   fieldErrors,
+  fieldVisitSchema,
   formDataToObject,
   newsletterSchema,
+  orderRequestSchema,
   partnerSchema,
 } from '@/lib/validation/forms';
 
@@ -62,6 +64,78 @@ describe('farm callback form', () => {
     expect(withoutArea.success && withoutArea.data.area).toBeUndefined();
     const negative = farmCallbackSchema.safeParse({ ...base, area: '-3' });
     expect(negative.success).toBe(false);
+  });
+});
+
+describe('order request', () => {
+  const schema = orderRequestSchema(['5 litre can']);
+  const valid = {
+    product: 'halad-special',
+    pack: '5 litre can',
+    quantity: '2',
+    fullName: 'Test Grower',
+    phone: '9876543210',
+    state: 'Karnataka',
+    district: 'Chamarajanagar',
+    pinCode: '',
+    notes: '',
+    consentContact: 'yes',
+  };
+
+  it('accepts a valid request and reads the quantity as a number', () => {
+    const result = schema.safeParse(valid);
+    expect(result.success).toBe(true);
+    if (!result.success) return;
+    expect(result.data.quantity).toBe(2);
+    expect(result.data.phone).toBe('+919876543210');
+    expect(result.data.pinCode).toBeUndefined();
+  });
+
+  it("only accepts the product's own pack sizes", () => {
+    const result = schema.safeParse({ ...valid, pack: '1 litre bottle' });
+    expect(result.success).toBe(false);
+    if (!result.success) expect(fieldErrors(result.error).pack).toBe('Choose a pack size.');
+  });
+
+  it('keeps quantities between 1 and 999 whole packs', () => {
+    for (const quantity of ['0', '1000', '2.5', '']) {
+      expect(schema.safeParse({ ...valid, quantity }).success, quantity).toBe(false);
+    }
+    expect(schema.safeParse({ ...valid, quantity: '999' }).success).toBe(true);
+  });
+
+  it('checks an optional PIN code', () => {
+    expect(schema.safeParse({ ...valid, pinCode: '12345' }).success).toBe(false);
+    expect(schema.safeParse({ ...valid, pinCode: '571313' }).success).toBe(true);
+  });
+});
+
+describe('field visit request', () => {
+  const valid = {
+    visitType: 'team-visit',
+    fullName: 'Test Grower',
+    phone: '9876543210',
+    state: 'Maharashtra',
+    district: 'Sangli',
+    location: 'Test village',
+    crop: 'Turmeric',
+    area: '',
+    preferredTime: '',
+    consentContact: 'yes',
+  };
+
+  it('accepts a valid request', () => {
+    expect(fieldVisitSchema.safeParse(valid).success).toBe(true);
+  });
+
+  it('only accepts the listed kinds of visit', () => {
+    const result = fieldVisitSchema.safeParse({ ...valid, visitType: 'agronomist-visit' });
+    expect(result.success).toBe(false);
+    if (!result.success) expect(fieldErrors(result.error).visitType).toBe('Choose what you would like.');
+  });
+
+  it('requires consent to be called', () => {
+    expect(fieldVisitSchema.safeParse({ ...valid, consentContact: undefined }).success).toBe(false);
   });
 });
 

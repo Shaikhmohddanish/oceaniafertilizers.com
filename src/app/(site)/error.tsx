@@ -11,10 +11,10 @@ export default function SiteError({ error, reset }: { error: Error & { digest?: 
   }, [error]);
 
   return (
-    <section className="section-space bg-ivory-50" aria-labelledby="error-title">
+    <section className="section-space bg-paper" aria-labelledby="error-title">
       <div className="container-site max-w-[48rem]">
-        <p className="type-label text-gold-700">Something went wrong</p>
-        <h1 id="error-title" className="type-h1 mt-6 text-forest-900">
+        <p className="type-label text-clay-700">Something went wrong</p>
+        <h1 id="error-title" className="type-h1 mt-6 text-pine-700">
           This page did not load properly.
         </h1>
         <p className="type-lead mt-8 text-ink-700">Please try again. If it keeps happening, come back a little later.</p>

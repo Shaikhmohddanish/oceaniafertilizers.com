@@ -7,6 +7,6 @@ type EyebrowProps = {
 
 /** A short label above a heading, used sparingly where it adds context. */
 export function Eyebrow({ children, tone = 'light', as: Tag = 'p', className = '' }: EyebrowProps) {
-  const color = tone === 'light' ? 'text-gold-700' : 'text-gold-300';
+  const color = tone === 'light' ? 'text-clay-700' : 'text-clay-300';
   return <Tag className={`type-label ${color} ${className}`}>{children}</Tag>;
 }

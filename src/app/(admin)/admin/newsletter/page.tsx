@@ -28,19 +28,19 @@ export default async function NewsletterPage({ searchParams }: Props) {
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <h1 className="type-h2 text-forest-900">Newsletter</h1>
+            <h1 className="type-h2 text-pine-700">Newsletter</h1>
             <p className="mt-2 text-ink-700">
               {subscribed} subscribed, {unsubscribed} unsubscribed.
             </p>
             {params.updated ? (
-              <p role="status" className="type-small mt-4 border-l-2 border-forest-700 bg-ivory-100 px-4 py-2">
+              <p role="status" className="type-small mt-4 border-l-2 border-pine-600 bg-paper-deep px-4 py-2">
                 Unsubscribed. They will not be included in the next download.
               </p>
             ) : null}
           </div>
           <a
             href="/admin/newsletter/export"
-            className="inline-flex min-h-10 items-center rounded-[2px] border border-forest-800 px-4 font-medium text-forest-800 hover:bg-forest-800 hover:text-ivory-50"
+            className="inline-flex min-h-10 items-center rounded-[2px] border border-pine-700 px-4 font-medium text-pine-700 hover:bg-pine-700 hover:text-paper"
           >
             Download subscribers (CSV)
           </a>
@@ -77,7 +77,7 @@ export default async function NewsletterPage({ searchParams }: Props) {
                       {subscriber.status === 'subscribed' ? (
                         <form action={stopNewsletter}>
                           <input type="hidden" name="id" value={subscriber.id} />
-                          <button type="submit" className="font-medium text-forest-800 underline underline-offset-4">
+                          <button type="submit" className="font-medium text-pine-700 underline underline-offset-4">
                             Unsubscribe<span className="sr-only"> {subscriber.email}</span>
                           </button>
                         </form>
@@ -93,7 +93,7 @@ export default async function NewsletterPage({ searchParams }: Props) {
         {pages > 1 ? (
           <nav aria-label="Pages" className="mt-8 flex items-center gap-4">
             {page > 1 ? (
-              <Link href={`/admin/newsletter?page=${page - 1}`} className="font-medium text-forest-800 underline">
+              <Link href={`/admin/newsletter?page=${page - 1}`} className="font-medium text-pine-700 underline">
                 Previous
               </Link>
             ) : null}
@@ -101,7 +101,7 @@ export default async function NewsletterPage({ searchParams }: Props) {
               Page {page} of {pages}
             </span>
             {page < pages ? (
-              <Link href={`/admin/newsletter?page=${page + 1}`} className="font-medium text-forest-800 underline">
+              <Link href={`/admin/newsletter?page=${page + 1}`} className="font-medium text-pine-700 underline">
                 Next
               </Link>
             ) : null}

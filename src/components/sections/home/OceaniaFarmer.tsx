@@ -5,23 +5,16 @@ import { Lines } from '@/components/ui/Lines';
 import type { HomePage } from '@/content/types';
 
 /*
- * The workbook's "anatomy of an Oceania farmer", set as the legend of an
- * anatomical plate instead of a crowded infographic. The figure stays clean;
- * the fourteen lines read head to feet beside it, at every screen size.
+ * Farmers who learn. The client's own line, "More than a farmer. A
+ * decision-maker.", with three short points about learning, asking and
+ * sharing, rather than an idealised portrait of the perfect farmer.
  */
 export function OceaniaFarmer({ farmer }: { farmer: HomePage['farmer'] }) {
   return (
-    <section aria-labelledby="oceania-farmer-title" className="on-dark section-space render-later bg-botanical-950 text-ivory-50">
-      <div className="container-site grid-site gap-y-14">
+    <section aria-labelledby="oceania-farmer-title" className="on-dark section-space render-later bg-pine-900 text-paper">
+      <div className="container-site grid-site items-center gap-y-14">
         <div className="col-span-12 lg:col-span-5">
-          <div className="lg:sticky lg:top-[calc(var(--header-height)+2rem)]">
-            <Figure
-              image={farmer.image}
-              aspect="4 / 5"
-              tone="dark"
-              sizes="(min-width: 1024px) 40vw, 100vw"
-            />
-          </div>
+          <Figure image={farmer.image} aspect="4 / 5" tone="dark" sizes="(min-width: 1024px) 40vw, 100vw" />
         </div>
 
         <div className="col-span-12 lg:col-span-6 lg:col-start-7">
@@ -30,22 +23,22 @@ export function OceaniaFarmer({ farmer }: { farmer: HomePage['farmer'] }) {
             <h2 id="oceania-farmer-title" className="type-h2 mt-6">
               <Lines text={farmer.headline} />
             </h2>
-            <p className="type-lead mt-8 max-w-[38ch] text-sage-200">{farmer.body}</p>
+            <p className="type-lead mt-8 max-w-[38ch] text-pine-100">{farmer.body}</p>
           </div>
 
-          <ol aria-label="The Oceania farmer, head to feet" className="mt-14 grid gap-x-10 sm:grid-cols-2">
-            {farmer.points.map((point) => (
+          <ul className="mt-12">
+            {farmer.points.map((point, index) => (
               <li
-                key={`${point.part}-${point.meaning}`}
-                className="border-t border-[color:var(--line-on-dark)] py-4"
+                key={point.title}
+                data-reveal="rise"
+                style={{ ['--reveal-index' as string]: index }}
+                className="grid gap-x-8 border-t border-[color:var(--line-on-dark)] py-5 sm:grid-cols-[8rem_1fr] sm:items-baseline"
               >
-                <p>
-                  <span className="type-label block text-gold-300">{point.part}</span>
-                  <span className="mt-1 block font-display text-[1.25rem] leading-snug text-ivory-50">{point.meaning}</span>
-                </p>
+                <h3 className="type-h3 text-clay-300">{point.title}</h3>
+                <p className="mt-1 text-pine-100 sm:mt-0">{point.body}</p>
               </li>
             ))}
-          </ol>
+          </ul>
 
           <div className="mt-12">
             <ButtonLink href={farmer.cta.href} variant="light">

@@ -16,8 +16,8 @@ const sizes = {
 };
 
 export function Wordmark({ tone = 'ink', size = 'md', className = '' }: WordmarkProps) {
-  const color = tone === 'ink' ? 'text-forest-800' : 'text-ivory-50';
-  const sub = tone === 'ink' ? 'text-gold-700' : 'text-gold-300';
+  const color = tone === 'ink' ? 'text-pine-700' : 'text-paper';
+  const sub = tone === 'ink' ? 'text-clay-700' : 'text-clay-300';
   return (
     <span className={`inline-flex flex-col items-center leading-none select-none ${color} ${className}`}>
       <span className={`font-display font-bold tracking-[0.16em] ${sizes[size].main}`} style={{ marginRight: '-0.16em' }}>

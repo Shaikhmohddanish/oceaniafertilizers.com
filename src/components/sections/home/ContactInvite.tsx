@@ -1,56 +1,53 @@
-import { MailIcon, PhoneIcon, WhatsAppIcon } from '@/components/brand/icons';
+import { MailIcon } from '@/components/brand/icons';
+import { ContactActions } from '@/components/contact/ContactActions';
 import { ButtonLink } from '@/components/ui/Button';
 import { Eyebrow } from '@/components/ui/Eyebrow';
 import { Lines } from '@/components/ui/Lines';
 import type { HomePage, SiteSettings } from '@/content/types';
-import { formatPhone, whatsappHref } from '@/lib/contact';
 
-/** "Let's understand your farm." The short farm callback form sits beside the invitation. */
+/** Connect: "Let's understand your farm." The crop advice form sits beside WhatsApp and call. */
 export function ContactInvite({
   section,
   contact,
+  languages,
   form,
 }: {
   section: HomePage['contact'];
   contact: SiteSettings['contact'];
+  /** For example "English and Marathi". */
+  languages?: string;
   form?: React.ReactNode;
 }) {
-  const channels = [
-    contact.whatsapp
-      ? { href: whatsappHref(contact.whatsapp, 'Hello Oceania, I would like to talk about my farm.'), label: `WhatsApp ${formatPhone(contact.whatsapp)}`, Icon: WhatsAppIcon }
-      : null,
-    contact.phone ? { href: `tel:${contact.phone}`, label: formatPhone(contact.phone), Icon: PhoneIcon } : null,
-    contact.email ? { href: `mailto:${contact.email}`, label: contact.email, Icon: MailIcon } : null,
-  ].filter((item): item is NonNullable<typeof item> => Boolean(item));
 
   return (
-    <section aria-labelledby="contact-invite-title" className="section-space render-later bg-paper">
+    <section aria-labelledby="contact-invite-title" className="section-space render-later bg-surface">
       <div className="container-site grid-site gap-y-12">
         <div className="col-span-12 lg:col-span-5" data-reveal="rise">
           <Eyebrow>{section.eyebrow}</Eyebrow>
-          <h2 id="contact-invite-title" className="type-h1 mt-6 max-w-[12ch] text-forest-900">
+          <h2 id="contact-invite-title" className="type-h1 mt-6 max-w-[12ch] text-pine-700">
             <Lines text={section.headline} />
           </h2>
           <p className="type-lead mt-8 max-w-[32ch] text-ink-700">{section.body}</p>
-          {channels.length > 0 ? (
-            <ul className="mt-10 space-y-3">
-              {channels.map(({ href, label, Icon }) => (
-                <li key={href}>
-                  <a href={href} className="inline-flex items-center gap-3 font-medium text-forest-800 hover:text-forest-900">
-                    <Icon className="text-gold-700" />
-                    <span className="link-draw">{label}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+          {languages ? <p className="mt-6 font-bold text-ink-900">Advice in {languages}.</p> : null}
+          <ContactActions
+            contact={contact}
+            place="home_connect"
+            whatsappMessage="Hello Oceania, I would like to talk about my farm."
+            className="mt-8"
+          />
+          {contact.email ? (
+            <a href={`mailto:${contact.email}`} className="mt-4 inline-flex min-h-11 items-center gap-2 font-bold text-pine-700">
+              <MailIcon />
+              <span className="link-draw">{contact.email}</span>
+            </a>
           ) : null}
         </div>
         <div className="col-span-12 lg:col-span-6 lg:col-start-7">
           {form ?? (
             <div className="border-t border-[color:var(--line-strong)] pt-8">
               <p className="text-ink-700">Tell us about your crop and we will get back to you.</p>
-              <ButtonLink href="/contact" className="mt-6">
-                Talk to Oceania
+              <ButtonLink href="/advice" className="mt-6">
+                Get crop advice
               </ButtonLink>
             </div>
           )}

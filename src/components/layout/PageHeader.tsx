@@ -22,7 +22,7 @@ export function PageHeader({ title, standfirst, crumbs, image, variant = 'statem
   const titleSize = variant === 'split' ? 'type-h1 lg:text-[clamp(2.5rem,1.6rem+3.6vw,4.75rem)]' : 'type-h1';
   const text = (
     <>
-      <h1 className={`${titleSize} max-w-[16ch] text-forest-900`}>
+      <h1 className={`${titleSize} max-w-[16ch] text-pine-700`}>
         <Lines text={title} />
       </h1>
       {standfirst ? <p className="type-lead mt-8 max-w-[40ch] text-ink-700">{standfirst}</p> : null}
@@ -32,7 +32,7 @@ export function PageHeader({ title, standfirst, crumbs, image, variant = 'statem
 
   if (variant === 'split' && image) {
     return (
-      <header className="bg-ivory-50 pt-8 pb-[var(--section-space)] lg:pt-12">
+      <header className="bg-paper pt-8 pb-[var(--section-space)] lg:pt-12">
         <div className="container-site">
           <Breadcrumbs items={crumbs} />
           <div className="grid-site mt-10 items-end gap-y-12 lg:mt-14">
@@ -48,7 +48,7 @@ export function PageHeader({ title, standfirst, crumbs, image, variant = 'statem
 
   if (variant === 'banner' && image) {
     return (
-      <header className="bg-ivory-50 pt-8 lg:pt-12">
+      <header className="bg-paper pt-8 lg:pt-12">
         <div className="container-site">
           <Breadcrumbs items={crumbs} />
           <div className="mt-10 lg:mt-14">{text}</div>
@@ -67,7 +67,7 @@ export function PageHeader({ title, standfirst, crumbs, image, variant = 'statem
   }
 
   return (
-    <header className="bg-ivory-50 pt-8 pb-12 lg:pt-12 lg:pb-16">
+    <header className="bg-paper pt-8 pb-12 lg:pt-12 lg:pb-16">
       <div className="container-site">
         <Breadcrumbs items={crumbs} />
         <div className="mt-10 lg:mt-14">{text}</div>

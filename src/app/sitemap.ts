@@ -1,18 +1,19 @@
 import type { MetadataRoute } from 'next';
 
-import { getArticles, getProducts } from '@/content/repository';
+import { getArticles, getFarmingVideos, getProducts } from '@/content/repository';
 import { absoluteUrl } from '@/lib/site-config';
 
 /** Only published content is listed; drafts never appear, whatever the environment. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [products, articles] = await Promise.all([getProducts(), getArticles()]);
+  const [products, articles, videos] = await Promise.all([getProducts(), getArticles(), getFarmingVideos()]);
 
   const pages = [
     '/',
+    '/learn',
+    '/advice',
     '/products',
-    '/demo-plots',
+    '/field-visits',
     '/farmer-stories',
-    '/insights',
     '/about',
     '/gallery',
     '/become-a-partner',
@@ -29,7 +30,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const articleEntries = articles
     .filter((article) => article.status === 'published')
-    .map((article) => ({ url: absoluteUrl(`/insights/${article.slug}`), lastModified: article.updatedAt }));
+    .map((article) => ({ url: absoluteUrl(`/learn/${article.slug}`), lastModified: article.updatedAt }));
 
-  return [...pages, ...productEntries, ...articleEntries];
+  const videoEntries = videos
+    .filter((video) => video.status === 'published')
+    .map((video) => ({ url: absoluteUrl(`/learn/videos/${video.slug}`), lastModified: video.publishedAt }));
+
+  return [...pages, ...productEntries, ...articleEntries, ...videoEntries];
 }

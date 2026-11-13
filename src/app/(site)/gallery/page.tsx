@@ -22,7 +22,7 @@ export default async function GalleryPage() {
         standfirst={intro.standfirst}
         crumbs={[{ label: 'Gallery', href: '/gallery' }]}
       />
-      <section aria-label="Photographs" className="bg-ivory-50 pb-[var(--section-space)]">
+      <section aria-label="Photographs" className="bg-paper pb-[var(--section-space)]">
         <div className="container-site">
           {items.length > 0 ? (
             <>

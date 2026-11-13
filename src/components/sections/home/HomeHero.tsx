@@ -1,66 +1,60 @@
+import { OFrame } from '@/components/brand/OFrame';
+import { ContactActions } from '@/components/contact/ContactActions';
 import { Picture } from '@/components/media/Picture';
-import { ButtonLink, TextLink } from '@/components/ui/Button';
-import { Eyebrow } from '@/components/ui/Eyebrow';
-import type { HomePage } from '@/content/types';
+import { ButtonLink } from '@/components/ui/Button';
+import type { HomePage, SiteSettings } from '@/content/types';
 
 /**
- * The headline sits in the sky. The section takes the colour of the top edge
- * of the photograph, and the image starts below the text with a short
- * feathered edge, so the field rises out of the page with no overlay needed.
+ * Arrive: the brand line, one short promise, the main action and a way to
+ * reach a person, set on pine. The crop photograph sits in the O-frame.
  */
-export function HomeHero({ hero }: { hero: HomePage['hero'] }) {
+export function HomeHero({ hero, contact }: { hero: HomePage['hero']; contact: SiteSettings['contact'] }) {
   const lines = hero.headline.split('\n');
-  const sky = hero.image.backdrop ?? 'var(--color-ivory-50)';
 
   return (
-    <section
-      aria-labelledby="home-hero-title"
-      className="relative -mt-[var(--header-height)] overflow-hidden"
-      style={{ backgroundColor: sky }}
-    >
-      <div className="container-site relative z-10 pt-[calc(var(--header-height)+clamp(2.5rem,7vh,6rem))]">
-        <div className="grid-site items-end gap-y-8">
-          <div className="col-span-12 lg:col-span-8">
-            {hero.eyebrow ? <Eyebrow>{hero.eyebrow}</Eyebrow> : null}
-            <h1 id="home-hero-title" className="type-display mt-6 text-forest-900">
-              {lines.map((line, index) => (
-                <span key={line} className="block">
-                  <span className="hero-line" style={{ ['--line-index' as string]: index }}>
-                    {line}
-                  </span>
+    <section aria-labelledby="home-hero-title" className="on-dark overflow-hidden bg-pine-700 text-paper">
+      <div className="container-site grid-site items-center gap-y-12 py-[clamp(3rem,9vh,7rem)]">
+        <div className="col-span-12 lg:col-span-7">
+          <h1 id="home-hero-title" className="type-display">
+            {lines.map((line, index) => (
+              <span key={line} className="block">
+                <span className="hero-line" style={{ ['--line-index' as string]: index }}>
+                  {line}
                 </span>
-              ))}
-            </h1>
+              </span>
+            ))}
+          </h1>
+          <p className="type-lead mt-6 max-w-[34ch] text-pine-100">{hero.standfirst}</p>
+          <div className="mt-9 flex flex-wrap items-center gap-4">
+            <ButtonLink href={hero.primaryCta.href} variant="light">
+              {hero.primaryCta.label}
+            </ButtonLink>
+            <ButtonLink href={hero.secondaryCta.href} variant="outline-light">
+              {hero.secondaryCta.label}
+            </ButtonLink>
           </div>
-          <div className="col-span-12 sm:col-span-9 lg:col-span-4 lg:pb-3">
-            <p className="type-lead max-w-[34ch] text-ink-700">{hero.standfirst}</p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-              <ButtonLink href={hero.primaryCta.href}>{hero.primaryCta.label}</ButtonLink>
-              <TextLink href={hero.secondaryCta.href} className="text-forest-800">
-                {hero.secondaryCta.label}
-              </TextLink>
-            </div>
-          </div>
+          <ContactActions contact={contact} place="hero" tone="dark" className="mt-7" />
         </div>
-      </div>
 
-      <div className="relative -mt-6 aspect-[4/5] w-full sm:aspect-[16/10] lg:-mt-16 lg:aspect-auto lg:h-[min(62svh,40rem)]">
-        <Picture
-          image={hero.image}
-          fill
-          preload
-          quality={65}
-          sizes="100vw"
-          className="object-cover [mask-image:linear-gradient(to_bottom,transparent_0%,#000_14%)]"
-        />
+        <figure className="col-span-12 sm:col-span-8 sm:col-start-3 lg:col-span-4 lg:col-start-9">
+          <OFrame>
+            <Picture
+              image={hero.image}
+              fill
+              preload
+              quality={65}
+              sizes="(min-width: 1024px) 30vw, (min-width: 640px) 60vw, 90vw"
+              className="object-cover"
+            />
+          </OFrame>
+          {hero.image.caption ? (
+            <figcaption className="type-caption mt-4 text-center text-pine-200">
+              {hero.image.caption}
+              {hero.image.credit ? ` Photo: ${hero.image.credit.author}, ${hero.image.credit.license}.` : ''}
+            </figcaption>
+          ) : null}
+        </figure>
       </div>
-
-      {hero.image.caption ? (
-        <p className="container-site type-caption relative z-10 -mt-9 pb-3 text-right text-ivory-50/85">
-          {hero.image.caption}
-          {hero.image.credit ? ` Photo: ${hero.image.credit.author}, ${hero.image.credit.license}.` : ''}
-        </p>
-      ) : null}
     </section>
   );
 }

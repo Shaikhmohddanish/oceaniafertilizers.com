@@ -21,6 +21,16 @@ export const consentLabels = {
       Oceania may contact me by phone about this enquiry. I have read the <PrivacyLink />.
     </>
   ),
+  contactAboutOrder: (
+    <>
+      Oceania may call me about this order to confirm the price and delivery. I have read the <PrivacyLink />.
+    </>
+  ),
+  contactAboutVisit: (
+    <>
+      Oceania may call me to arrange this visit. I have read the <PrivacyLink />.
+    </>
+  ),
   contactAboutCommunity: (
     <>
       Oceania may contact me by phone about the farmer community. I have read the <PrivacyLink />.

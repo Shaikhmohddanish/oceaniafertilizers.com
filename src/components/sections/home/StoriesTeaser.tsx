@@ -11,16 +11,16 @@ export function StoriesTeaser({ section, stories }: { section: HomePage['stories
   if (!lead) return null;
 
   return (
-    <section aria-labelledby="stories-teaser-title" className="section-space render-later bg-ivory-50">
+    <section aria-labelledby="stories-teaser-title" className="section-space render-later bg-paper">
       <div className="container-site">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div data-reveal="rise">
             <Eyebrow>{section.eyebrow}</Eyebrow>
-            <h2 id="stories-teaser-title" className="type-h1 mt-6 max-w-[16ch] text-forest-900">
+            <h2 id="stories-teaser-title" className="type-h1 mt-6 max-w-[16ch] text-pine-700">
               <Lines text={section.headline} />
             </h2>
           </div>
-          <TextLink href="/farmer-stories" className="text-forest-800">
+          <TextLink href="/farmer-stories" className="text-pine-700">
             All farmer stories
           </TextLink>
         </div>

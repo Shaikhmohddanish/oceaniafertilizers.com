@@ -11,6 +11,7 @@ import type { ContentSource } from './source';
 import type {
   Article,
   DemoPlot,
+  FarmingVideo,
   Faq,
   GalleryItem,
   LegalPage,
@@ -94,6 +95,25 @@ export const getDemoPlots = cache(async (): Promise<DemoPlot[]> =>
 
 export async function getDemoPlotsForProduct(slug: string): Promise<DemoPlot[]> {
   return (await getDemoPlots()).filter((plot) => plot.products.some((product) => product.slug === slug));
+}
+
+export const getFarmingVideos = cache(async (): Promise<FarmingVideo[]> =>
+  visible(await source.getFarmingVideos()).sort(byOrder),
+);
+
+export const getFarmingVideo = cache(async (slug: string): Promise<FarmingVideo | null> => {
+  const videos = await getFarmingVideos();
+  return videos.find((video) => video.slug === slug) ?? null;
+});
+
+/** Topics used by at least one visible farmer video or article, for the Learn filter. */
+export async function getActiveLearnTopics() {
+  const [categories, articles, videos] = await Promise.all([source.getArticleCategories(), getArticles(), getFarmingVideos()]);
+  return categories.filter(
+    (category) =>
+      videos.some((video) => video.topic?.slug === category.slug) ||
+      articles.some((article) => article.categories.some((item) => item.slug === category.slug)),
+  );
 }
 
 export const getGalleryItems = cache(async (): Promise<GalleryItem[]> =>

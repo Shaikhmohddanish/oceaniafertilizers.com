@@ -3,7 +3,7 @@ import { OG_SIZE, shareImage } from '@/lib/seo/og';
 
 export const size = OG_SIZE;
 export const contentType = 'image/png';
-export const alt = 'Oceania Fertilizers insight';
+export const alt = 'Oceania Fertilizers guide';
 
 export async function generateStaticParams() {
   const articles = await getArticles();
@@ -14,7 +14,7 @@ export default async function ArticleOpenGraphImage({ params }: { params: Promis
   const { slug } = await params;
   const article = await getArticle(slug);
   return shareImage({
-    label: article?.categories[0]?.title ?? 'Insights',
-    title: article?.title ?? 'Insights',
+    label: article?.categories[0]?.title ?? 'Learn',
+    title: article?.title ?? 'Learn farming together',
   });
 }

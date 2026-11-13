@@ -42,3 +42,11 @@ export const farmerInterestLabels: Record<(typeof farmerInterests)[number], stri
   'product-information': 'Information about Oceania products',
   'share-experience': 'Sharing my experience',
 };
+
+export const visitTypes = ['team-visit', 'demo-on-my-farm', 'visit-demo-plot'] as const;
+
+export const visitTypeLabels: Record<(typeof visitTypes)[number], string> = {
+  'team-visit': 'A visit from your team to my farm',
+  'demo-on-my-farm': 'A demo plot on my farm',
+  'visit-demo-plot': 'A visit to a demo plot near me',
+};

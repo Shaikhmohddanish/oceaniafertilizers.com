@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { RichText } from '@/components/content/RichText';
-import { ArticleCard } from '@/components/insights/ArticleCard';
+import { ArticleCard } from '@/components/learn/ArticleCard';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { Figure } from '@/components/media/Picture';
 import { ProductCard } from '@/components/products/ProductCard';
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return pageMetadata({
     title: article.seo?.title ?? article.title,
     description: article.seo?.description ?? article.excerpt,
-    path: `/insights/${article.slug}`,
+    path: `/learn/${article.slug}`,
     type: 'article',
     publishedTime: article.publishedAt,
     modifiedTime: article.updatedAt,
@@ -56,20 +56,20 @@ export default async function ArticlePage({ params }: Params) {
     <>
       {article.status === 'published' ? <JsonLd data={articleJsonLd(article)} /> : null}
       <article>
-        <header className="bg-ivory-50 pt-8 lg:pt-12">
+        <header className="bg-paper pt-8 lg:pt-12">
           <div className="container-site">
             <Breadcrumbs
               items={[
-                { label: 'Insights', href: '/insights' },
-                { label: article.title, href: `/insights/${article.slug}` },
+                { label: 'Learn', href: '/learn' },
+                { label: article.title, href: `/learn/${article.slug}` },
               ]}
             />
             <div className="mt-10 max-w-[56rem] lg:mt-14">
               <div className="flex flex-wrap items-center gap-3">
-                {category ? <p className="type-label text-gold-700">{category.title}</p> : null}
+                {category ? <p className="type-label text-clay-700">{category.title}</p> : null}
                 <PendingTag status={article.status} />
               </div>
-              <h1 className="type-h1 mt-6 text-forest-900">{article.title}</h1>
+              <h1 className="type-h1 mt-6 text-pine-700">{article.title}</h1>
               {article.standfirst ? <p className="type-lead mt-8 max-w-[44ch] text-ink-700">{article.standfirst}</p> : null}
               <p className="type-small mt-8 flex flex-wrap gap-x-4 gap-y-1 text-ink-500">
                 <span>By {article.author.name}</span>
@@ -86,7 +86,7 @@ export default async function ArticlePage({ params }: Params) {
           ) : null}
         </header>
 
-        <div className="bg-ivory-50 pb-[var(--section-space)]">
+        <div className="bg-paper pb-[var(--section-space)]">
           <div className="container-site grid-site gap-y-12 pt-14 lg:pt-20">
             <RichText value={article.body} className="type-body-lg col-span-12 max-w-[64ch] text-ink-700 lg:col-span-7 lg:col-start-3" />
 
@@ -95,7 +95,7 @@ export default async function ArticlePage({ params }: Params) {
                 <h2 id="sources-title" className="type-label text-ink-500">
                   Sources
                 </h2>
-                <ol className="type-small mt-4 list-decimal space-y-2 pl-5 text-ink-700 marker:text-gold-700">
+                <ol className="type-small mt-4 list-decimal space-y-2 pl-5 text-ink-700 marker:text-clay-700">
                   {article.sources.map((source) => (
                     <li key={source.url}>
                       <a href={source.url} className="link-inline" rel="noopener noreferrer" target="_blank">
@@ -112,9 +112,9 @@ export default async function ArticlePage({ params }: Params) {
       </article>
 
       {relatedProducts.length > 0 ? (
-        <section aria-labelledby="article-products-title" className="section-space bg-ivory-100">
+        <section aria-labelledby="article-products-title" className="section-space bg-paper-deep">
           <div className="container-site">
-            <h2 id="article-products-title" className="type-h2 text-forest-900">
+            <h2 id="article-products-title" className="type-h2 text-pine-700">
               Related products
             </h2>
             <ul className="mt-12 grid gap-x-[var(--column-gap)] gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
@@ -129,9 +129,9 @@ export default async function ArticlePage({ params }: Params) {
       ) : null}
 
       {related.length > 0 ? (
-        <section aria-labelledby="further-reading-title" className="section-space bg-ivory-50">
+        <section aria-labelledby="further-reading-title" className="section-space bg-paper">
           <div className="container-site">
-            <h2 id="further-reading-title" className="type-h2 text-forest-900">
+            <h2 id="further-reading-title" className="type-h2 text-pine-700">
               Further reading
             </h2>
             <div className="mt-12 grid gap-x-[var(--column-gap)] gap-y-14 md:grid-cols-3">

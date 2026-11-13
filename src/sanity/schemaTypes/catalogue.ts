@@ -173,7 +173,7 @@ export const product = defineType({
   preview: { select: { title: 'name', subtitle: 'category.title', media: 'images.0' } },
 });
 
-const consentFields = [
+export const consentFields = [
   defineField({
     name: 'consent',
     title: 'The farmer agreed to publication',
@@ -349,7 +349,7 @@ export const galleryItem = defineType({
   preview: { select: { title: 'title', subtitle: 'category.title', media: 'image' } },
 });
 
-function stateList() {
+export function stateList() {
   return STATES_AND_UNION_TERRITORIES.map((state) => ({ title: state, value: state }));
 }
 

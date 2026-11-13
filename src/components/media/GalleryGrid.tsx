@@ -94,12 +94,12 @@ export function GalleryGrid({ items, listId }: { items: GalleryItem[]; listId: s
           if (viewer !== null) triggers.current[viewer.index]?.focus();
           setViewer(null);
         }}
-        className="on-dark m-0 h-dvh max-h-none w-full max-w-none bg-botanical-950 p-0 text-ivory-50"
+        className="on-dark m-0 h-dvh max-h-none w-full max-w-none bg-pine-900 p-0 text-paper"
       >
         {current ? (
           <div className="flex h-full flex-col">
             <div className="container-site flex h-16 shrink-0 items-center justify-between">
-              <p className="type-numeral type-small text-sage-300" aria-live="polite">
+              <p className="type-numeral type-small text-pine-200" aria-live="polite">
                 {visiblePosition} of {visibleCount}
               </p>
               <button type="button" onClick={() => dialogRef.current?.close()} className="inline-flex min-h-11 items-center gap-2 font-medium">
@@ -113,7 +113,7 @@ export function GalleryGrid({ items, listId }: { items: GalleryItem[]; listId: s
             <div className="container-site flex shrink-0 flex-col gap-4 py-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-display text-[1.25rem] font-bold">{current.title}</p>
-                <p className="type-caption mt-1 text-sage-300">
+                <p className="type-caption mt-1 text-pine-200">
                   {caption(current)}
                   {current.image.credit ? `. Photo: ${current.image.credit.author}` : ''}
                 </p>
@@ -123,7 +123,7 @@ export function GalleryGrid({ items, listId }: { items: GalleryItem[]; listId: s
                   type="button"
                   onClick={() => step(-1)}
                   aria-label="Previous photo"
-                  className="flex h-12 w-12 items-center justify-center border border-ivory-50/40 hover:border-ivory-50"
+                  className="flex h-12 w-12 items-center justify-center border border-paper/40 hover:border-paper"
                 >
                   <ChevronLeftIcon />
                 </button>
@@ -131,7 +131,7 @@ export function GalleryGrid({ items, listId }: { items: GalleryItem[]; listId: s
                   type="button"
                   onClick={() => step(1)}
                   aria-label="Next photo"
-                  className="flex h-12 w-12 items-center justify-center border border-ivory-50/40 hover:border-ivory-50"
+                  className="flex h-12 w-12 items-center justify-center border border-paper/40 hover:border-paper"
                 >
                   <ChevronRightIcon />
                 </button>

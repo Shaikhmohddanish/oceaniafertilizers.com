@@ -7,13 +7,13 @@
 export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <html lang="en-IN">
-      <body style={{ margin: 0, background: '#f7f3ea', color: '#1a1d18', fontFamily: 'Georgia, serif' }}>
+      <body style={{ margin: 0, background: '#f5f1e8', color: '#1d2330', fontFamily: 'Arial, Helvetica, sans-serif' }}>
         <main style={{ maxWidth: '40rem', margin: '0 auto', padding: '6rem 1.5rem' }}>
-          <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.75rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#7a5c1c' }}>
+          <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#8a4f24' }}>
             Oceania Fertilizers
           </p>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 400, lineHeight: 1.1, margin: '1.5rem 0' }}>Something went wrong.</h1>
-          <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '1.0625rem', lineHeight: 1.6 }}>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 700, lineHeight: 1.1, letterSpacing: '-0.02em', margin: '1.5rem 0', color: '#24483c' }}>Something went wrong.</h1>
+          <p style={{ fontSize: '1.0625rem', lineHeight: 1.6 }}>
             The website could not load this page. Please try again in a moment.
           </p>
           <button
@@ -23,12 +23,13 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
               marginTop: '2rem',
               minHeight: '3rem',
               padding: '0 1.5rem',
-              border: 0,
+              border: '1px solid #b06f3c',
               borderRadius: 2,
-              background: '#1e3a2b',
-              color: '#f7f3ea',
-              fontFamily: 'Arial, sans-serif',
+              background: '#edb58a',
+              color: '#1d2330',
+              fontFamily: 'Arial, Helvetica, sans-serif',
               fontSize: '0.9375rem',
+              fontWeight: 700,
               cursor: 'pointer',
             }}
           >

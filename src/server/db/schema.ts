@@ -8,7 +8,15 @@ import { index, jsonb, pgEnum, pgTable, pgView, text, timestamp, uuid } from 'dr
  * tests load this file outside Next.js.
  */
 
-export const leadForms = ['contact', 'farm_callback', 'product_enquiry', 'partner_application', 'farmer_registration'] as const;
+export const leadForms = [
+  'contact',
+  'farm_callback',
+  'product_enquiry',
+  'partner_application',
+  'farmer_registration',
+  'order_request',
+  'field_visit',
+] as const;
 export const leadStatuses = ['new', 'contacted', 'qualified', 'closed', 'spam'] as const;
 export const notificationStatuses = ['pending', 'sent', 'failed', 'not_configured'] as const;
 

@@ -14,11 +14,11 @@ export const metadata: Metadata = pageMetadata({
 export default function ImageCreditsPage() {
   const photos = Object.entries(photoLibrary);
   return (
-    <div className="bg-ivory-50 pt-8 pb-[var(--section-space)] lg:pt-12">
+    <div className="bg-paper pt-8 pb-[var(--section-space)] lg:pt-12">
       <div className="container-site">
         <Breadcrumbs items={[{ label: 'Image credits', href: '/image-credits' }]} />
         <div className="mt-10 max-w-[48rem] lg:mt-14">
-          <h1 className="type-h1 text-forest-900">Image credits</h1>
+          <h1 className="type-h1 text-pine-700">Image credits</h1>
           <p className="type-lead mt-6 text-ink-700">
             Some landscape and crop photographs on this website are used under Creative Commons licences, from photographers
             across India. Product photographs are Oceania&apos;s own.
@@ -46,7 +46,7 @@ export default function ImageCreditsPage() {
               </div>
               <a
                 href={photo.credit.sourceUrl}
-                className="type-small link-inline col-start-2 text-forest-800 sm:col-start-3"
+                className="type-small link-inline col-start-2 text-pine-700 sm:col-start-3"
                 rel="noopener noreferrer"
                 target="_blank"
               >

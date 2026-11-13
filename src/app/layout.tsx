@@ -7,7 +7,7 @@ import type { Viewport } from 'next';
  * keeps its own look.
  */
 export const viewport: Viewport = {
-  themeColor: '#f7f3ea',
+  themeColor: '#f5f1e8',
   colorScheme: 'light',
 };
 

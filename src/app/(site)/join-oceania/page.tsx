@@ -33,9 +33,9 @@ export default async function JoinOceaniaPage() {
         crumbs={[{ label: 'Join Oceania', href: '/join-oceania' }]}
       />
 
-      <section aria-labelledby="expect-title" className="section-space bg-paper">
+      <section aria-labelledby="expect-title" className="section-space bg-surface">
         <div className="container-site">
-          <h2 id="expect-title" className="type-h2 max-w-[20ch] text-forest-900">
+          <h2 id="expect-title" className="type-h2 max-w-[20ch] text-pine-700">
             What you can expect as an Oceania farmer
           </h2>
           <ul className="mt-12 grid gap-x-[var(--column-gap)] border-t border-[color:var(--line-strong)] sm:grid-cols-2 lg:grid-cols-4">
@@ -46,7 +46,7 @@ export default async function JoinOceaniaPage() {
                 style={{ ['--reveal-index' as string]: index }}
                 className="border-b border-[color:var(--line)] py-8 lg:border-b-0 lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:pl-8"
               >
-                <h3 className="type-h3 text-forest-900">{item.title}</h3>
+                <h3 className="type-h3 text-pine-700">{item.title}</h3>
                 <p className="mt-3 text-ink-700">{item.body}</p>
               </li>
             ))}
@@ -54,16 +54,16 @@ export default async function JoinOceaniaPage() {
         </div>
       </section>
 
-      <section id="register" aria-labelledby="register-title" className="section-space bg-ivory-100">
+      <section id="register" aria-labelledby="register-title" className="section-space bg-paper-deep">
         <div className="container-site grid-site gap-y-12">
           <div className="col-span-12 lg:col-span-4">
-            <h2 id="register-title" className="type-h1 text-forest-900">
+            <h2 id="register-title" className="type-h1 text-pine-700">
               Join the community
             </h2>
             <p className="mt-6 max-w-[34ch] text-ink-700">It takes about two minutes. Only the fields marked optional can be skipped.</p>
             <p className="type-small mt-8 max-w-[34ch] text-ink-500">
               Run a shop or a distribution business?{' '}
-              <TextLink href="/become-a-partner" className="text-forest-800" arrow={false}>
+              <TextLink href="/become-a-partner" className="text-pine-700" arrow={false}>
                 Apply to become a partner
               </TextLink>{' '}
               instead.

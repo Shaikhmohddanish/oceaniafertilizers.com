@@ -130,7 +130,7 @@ export function FilterBar({ groups, listId, itemLabel, className = '' }: FilterB
                     type="button"
                     aria-pressed={!selection[group.key]}
                     onClick={() => update(group.key, '')}
-                    className="min-h-10 rounded-[2px] border border-[color:var(--line-strong)] px-3.5 text-[0.875rem] font-medium transition-colors hover:border-ink-700 aria-pressed:border-forest-800 aria-pressed:bg-forest-800 aria-pressed:text-ivory-50"
+                    className="min-h-10 rounded-[2px] border border-[color:var(--line-strong)] px-3.5 text-[0.875rem] font-medium transition-colors hover:border-ink-700 aria-pressed:border-pine-700 aria-pressed:bg-pine-700 aria-pressed:text-paper"
                   >
                     All
                   </button>
@@ -140,7 +140,7 @@ export function FilterBar({ groups, listId, itemLabel, className = '' }: FilterB
                       type="button"
                       aria-pressed={selection[group.key] === option.value}
                       onClick={() => update(group.key, option.value)}
-                      className="min-h-10 rounded-[2px] border border-[color:var(--line-strong)] px-3.5 text-[0.875rem] font-medium transition-colors hover:border-ink-700 aria-pressed:border-forest-800 aria-pressed:bg-forest-800 aria-pressed:text-ivory-50"
+                      className="min-h-10 rounded-[2px] border border-[color:var(--line-strong)] px-3.5 text-[0.875rem] font-medium transition-colors hover:border-ink-700 aria-pressed:border-pine-700 aria-pressed:bg-pine-700 aria-pressed:text-paper"
                     >
                       {option.label}
                     </button>
@@ -157,7 +157,7 @@ export function FilterBar({ groups, listId, itemLabel, className = '' }: FilterB
               : null}
           </p>
           {active ? (
-            <button type="button" onClick={reset} className="link-draw type-small font-medium text-forest-800">
+            <button type="button" onClick={reset} className="link-draw type-small font-medium text-pine-700">
               Clear filters
             </button>
           ) : null}

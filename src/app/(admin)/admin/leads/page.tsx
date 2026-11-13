@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getDb } from '@/server/db/client';
-import { leadForms, leadStatuses } from '@/server/db/schema';
-import { listLeads, PAGE_SIZE, parseFilters } from '@/server/admin/leads';
+import { type LeadForm, leadForms, leadStatuses } from '@/server/db/schema';
+import { countRecentLeadsByForm, listLeads, PAGE_SIZE, parseFilters } from '@/server/admin/leads';
 import { hasSession } from '@/server/admin/session';
 import { formLabels } from '@/server/notify/lead-email';
 
@@ -15,6 +15,11 @@ const ist = new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeStyle: '
 
 const statusLabel: Record<string, string> = { new: 'New', contacted: 'Contacted', qualified: 'Qualified', closed: 'Closed', spam: 'Spam' };
 
+// The conversations the site is there to start come first. Product enquiries were replaced by
+// order requests in November 2026, so they are listed only while older ones fall in the window.
+const recentOrder: LeadForm[] = ['farm_callback', 'order_request', 'field_visit', 'contact', 'farmer_registration', 'partner_application', 'product_enquiry'];
+const retiredForms: LeadForm[] = ['product_enquiry'];
+
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 export default async function LeadsPage({ searchParams }: Props) {
@@ -23,7 +28,7 @@ export default async function LeadsPage({ searchParams }: Props) {
   const filters = parseFilters(params);
   const page = Math.max(1, Number(params.page) || 1);
   const db = await getDb();
-  const { rows, total } = await listLeads(db, filters, page);
+  const [{ rows, total }, recent] = await Promise.all([listLeads(db, filters, page), countRecentLeadsByForm(db)]);
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const query = new URLSearchParams(
@@ -40,24 +45,41 @@ export default async function LeadsPage({ searchParams }: Props) {
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <h1 className="type-h2 text-forest-900">Leads</h1>
+            <h1 className="type-h2 text-pine-700">Leads</h1>
             <p className="mt-2 text-ink-700">
               {total} {total === 1 ? 'submission' : 'submissions'}
               {query.size > 0 ? ' matching these filters' : ''}.
             </p>
             {params.deleted ? (
-              <p role="status" className="type-small mt-4 border-l-2 border-forest-700 bg-ivory-100 px-4 py-2">
+              <p role="status" className="type-small mt-4 border-l-2 border-pine-600 bg-paper-deep px-4 py-2">
                 The lead was deleted.
               </p>
             ) : null}
           </div>
           <a
             href={`/admin/leads/export${query.size > 0 ? `?${query}` : ''}`}
-            className="inline-flex min-h-10 items-center rounded-[2px] border border-forest-800 px-4 font-medium text-forest-800 hover:bg-forest-800 hover:text-ivory-50"
+            className="inline-flex min-h-10 items-center rounded-[2px] border border-pine-700 px-4 font-medium text-pine-700 hover:bg-pine-700 hover:text-paper"
           >
             Download CSV
           </a>
         </div>
+
+        <section aria-labelledby="recent-title" className="mt-8">
+          <h2 id="recent-title" className="type-small font-bold text-ink-900">
+            Last 30 days
+          </h2>
+          <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-3">
+            {recentOrder
+              .filter((form) => !retiredForms.includes(form) || (recent[form] ?? 0) > 0)
+              .map((form) => (
+                <li key={form} className="type-small text-ink-700">
+                  <Link href={`/admin/leads?form=${form}`} className="underline-offset-4 hover:underline">
+                    {formLabels[form]}: <span className="type-numeral font-bold text-ink-900">{recent[form] ?? 0}</span>
+                  </Link>
+                </li>
+              ))}
+          </ul>
+        </section>
 
         <form className="mt-8 flex flex-wrap items-end gap-4 border-y border-[color:var(--line)] py-5" method="get">
           <label className="type-small grid gap-1">
@@ -94,11 +116,11 @@ export default async function LeadsPage({ searchParams }: Props) {
             <span className="text-ink-500">To</span>
             <input type="date" name="to" defaultValue={filters.to} className={control} />
           </label>
-          <button type="submit" className="h-10 rounded-[2px] bg-forest-800 px-4 font-medium text-ivory-50">
+          <button type="submit" className="h-10 rounded-[2px] bg-pine-700 px-4 font-medium text-paper">
             Apply
           </button>
           {query.size > 0 ? (
-            <Link href="/admin/leads" className="type-small font-medium text-forest-800 underline">
+            <Link href="/admin/leads" className="type-small font-medium text-pine-700 underline">
               Clear
             </Link>
           ) : null}
@@ -123,10 +145,10 @@ export default async function LeadsPage({ searchParams }: Props) {
               </thead>
               <tbody>
                 {rows.map((lead) => (
-                  <tr key={lead.id} className="border-b border-[color:var(--line)] align-top hover:bg-ivory-50">
+                  <tr key={lead.id} className="border-b border-[color:var(--line)] align-top hover:bg-paper">
                     <td className="py-3 pr-4 whitespace-nowrap">{ist.format(lead.createdAt)}</td>
                     <td className="py-3 pr-4">
-                      <Link href={`/admin/leads/${lead.id}`} className="type-numeral font-semibold text-forest-800 underline">
+                      <Link href={`/admin/leads/${lead.id}`} className="type-numeral font-semibold text-pine-700 underline">
                         {lead.reference}
                       </Link>
                     </td>
@@ -146,7 +168,7 @@ export default async function LeadsPage({ searchParams }: Props) {
         {pages > 1 ? (
           <nav aria-label="Pages" className="mt-8 flex items-center gap-4">
             {page > 1 ? (
-              <Link href={`/admin/leads?${new URLSearchParams([...query, ['page', String(page - 1)]])}`} className="font-medium text-forest-800 underline">
+              <Link href={`/admin/leads?${new URLSearchParams([...query, ['page', String(page - 1)]])}`} className="font-medium text-pine-700 underline">
                 Previous
               </Link>
             ) : null}
@@ -154,7 +176,7 @@ export default async function LeadsPage({ searchParams }: Props) {
               Page {page} of {pages}
             </span>
             {page < pages ? (
-              <Link href={`/admin/leads?${new URLSearchParams([...query, ['page', String(page + 1)]])}`} className="font-medium text-forest-800 underline">
+              <Link href={`/admin/leads?${new URLSearchParams([...query, ['page', String(page + 1)]])}`} className="font-medium text-pine-700 underline">
                 Next
               </Link>
             ) : null}

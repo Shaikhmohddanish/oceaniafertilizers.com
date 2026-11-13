@@ -23,7 +23,7 @@ test.describe('public routes', () => {
 });
 
 test('unknown and unpublished pages return a proper 404', async ({ page }) => {
-  for (const path of ['/does-not-exist', '/products/bingorhiza', '/insights/how-to-read-your-soil-health-card']) {
+  for (const path of ['/does-not-exist', '/products/bingorhiza', '/learn/how-to-read-your-soil-health-card', '/learn/videos/no-such-video']) {
     const response = await page.goto(path);
     expect(response?.status(), path).toBe(404);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('We could not find that page.');
@@ -31,7 +31,7 @@ test('unknown and unpublished pages return a proper 404', async ({ page }) => {
 });
 
 test('production shows no pending content and no preview notice', async ({ page }) => {
-  for (const route of ['/', '/products', '/insights']) {
+  for (const route of ['/', '/products', '/learn']) {
     await page.goto(route);
     await expect(page.getByText('Pending approval')).toHaveCount(0);
     await expect(page.getByText('Preview build')).toHaveCount(0);
@@ -50,7 +50,9 @@ test('robots and sitemap describe only published pages', async ({ request }) => 
   expect(sitemap).toContain('/products/halad-special');
   expect(sitemap).toContain('/products/waves-mycorrhizal-biofertilizer');
   expect(sitemap).not.toContain('bingorhiza');
-  expect(sitemap).not.toContain('/insights/how-to-read');
+  expect(sitemap).not.toContain('/learn/how-to-read');
+  expect(sitemap).toContain('/learn/videos/test-fixture-video');
+  expect(sitemap).toContain('/field-visits');
 });
 
 test('structured data is present and honest', async ({ page }) => {
@@ -89,4 +91,18 @@ test('private areas are not discoverable', async ({ request }) => {
   expect((await request.get('/admin/leads/export')).status()).toBe(404);
   const admin = await request.get('/admin');
   expect(admin.headers()['x-robots-tag']).toContain('noindex');
+});
+
+test('renamed pages redirect permanently to their new addresses', async ({ request }) => {
+  const moves: [string, string][] = [
+    ['/insights', '/learn'],
+    ['/insights/how-to-read-your-soil-health-card', '/learn/how-to-read-your-soil-health-card'],
+    ['/demo-plots', '/field-visits'],
+    ['/blog', '/learn'],
+  ];
+  for (const [from, to] of moves) {
+    const response = await request.get(from, { maxRedirects: 0 });
+    expect(response.status(), from).toBe(308);
+    expect(new URL(response.headers().location ?? '', 'http://localhost').pathname, from).toBe(to);
+  }
 });

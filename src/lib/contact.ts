@@ -23,3 +23,20 @@ export function formatAddress(address: SiteSettings['contact']['address']): stri
   const region = [state, pinCode].filter(Boolean).join(' ');
   return [line1, line2, locality, region].filter(Boolean).join(', ');
 }
+
+export type ContactChannel = 'whatsapp' | 'call' | 'advice';
+export type ContactAction = { channel: ContactChannel; label: string; href: string; external?: boolean };
+
+/**
+ * The ways to reach the team. WhatsApp and call appear only once their numbers
+ * are entered in Site settings; the crop advice form always works.
+ */
+export function contactActions(contact: SiteSettings['contact'], whatsappMessage?: string): ContactAction[] {
+  const actions: ContactAction[] = [];
+  if (contact.whatsapp) {
+    actions.push({ channel: 'whatsapp', label: 'WhatsApp', href: whatsappHref(contact.whatsapp, whatsappMessage), external: true });
+  }
+  if (contact.phone) actions.push({ channel: 'call', label: 'Call', href: `tel:${contact.phone}` });
+  actions.push({ channel: 'advice', label: 'Get advice', href: '/advice' });
+  return actions;
+}

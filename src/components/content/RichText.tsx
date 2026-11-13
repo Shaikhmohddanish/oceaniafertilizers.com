@@ -17,17 +17,17 @@ function isInternal(href: string) {
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p className="mt-5 first:mt-0">{children}</p>,
-    h2: ({ children }) => <h2 className="type-h3 mt-14 text-forest-900 first:mt-0">{children}</h2>,
-    h3: ({ children }) => <h3 className="type-h4 mt-10 text-forest-900 first:mt-0">{children}</h3>,
+    h2: ({ children }) => <h2 className="type-h3 mt-14 text-pine-700 first:mt-0">{children}</h2>,
+    h3: ({ children }) => <h3 className="type-h4 mt-10 text-pine-700 first:mt-0">{children}</h3>,
     blockquote: ({ children }) => (
-      <blockquote className="mt-8 border-l-2 border-gold-500 pl-6 font-display text-[1.375rem] leading-snug text-forest-900">
+      <blockquote className="mt-8 border-l-2 border-clay-600 pl-6 font-display text-[1.375rem] leading-snug text-pine-700">
         {children}
       </blockquote>
     ),
   },
   list: {
-    bullet: ({ children }) => <ul className="mt-5 list-disc space-y-2 pl-6 marker:text-gold-700">{children}</ul>,
-    number: ({ children }) => <ol className="type-numeral mt-5 list-decimal space-y-2 pl-6 marker:text-gold-700">{children}</ol>,
+    bullet: ({ children }) => <ul className="mt-5 list-disc space-y-2 pl-6 marker:text-clay-700">{children}</ul>,
+    number: ({ children }) => <ol className="type-numeral mt-5 list-decimal space-y-2 pl-6 marker:text-clay-700">{children}</ol>,
   },
   listItem: ({ children }) => <li className="pl-1">{children}</li>,
   marks: {
@@ -36,11 +36,11 @@ const components: PortableTextComponents = {
     link: ({ children, value }) => {
       const href = String((value as { href?: string } | undefined)?.href ?? '#');
       return isInternal(href) ? (
-        <Link href={href} className="link-inline font-medium text-forest-800">
+        <Link href={href} className="link-inline font-medium text-pine-700">
           {children}
         </Link>
       ) : (
-        <a href={href} className="link-inline font-medium text-forest-800" rel="noopener noreferrer" target="_blank">
+        <a href={href} className="link-inline font-medium text-pine-700" rel="noopener noreferrer" target="_blank">
           {children}
           <span className="sr-only"> (opens in a new tab)</span>
         </a>
@@ -53,9 +53,9 @@ const components: PortableTextComponents = {
     ),
     callout: ({ value }: { value: RichTextCallout }) => (
       <aside
-        className={`mt-10 border-l-2 px-6 py-5 ${value.tone === 'caution' ? 'border-soil-600 bg-sand-200/60' : 'border-forest-700 bg-ivory-100'}`}
+        className={`mt-10 border-l-2 px-6 py-5 ${value.tone === 'caution' ? 'border-clay-700 bg-sand-200/60' : 'border-pine-600 bg-paper-deep'}`}
       >
-        {value.title ? <p className="type-label text-gold-700">{value.title}</p> : null}
+        {value.title ? <p className="type-label text-clay-700">{value.title}</p> : null}
         <p className={`${value.title ? 'mt-2' : ''} text-ink-900`}>{value.body}</p>
       </aside>
     ),
@@ -65,11 +65,11 @@ const components: PortableTextComponents = {
         className="has-arrow group mt-10 flex items-center justify-between gap-6 border-y border-[color:var(--line-strong)] py-5"
       >
         <span>
-          <span className="type-label block text-gold-700">From the Oceania range</span>
-          <span className="type-h3 mt-2 block text-forest-900">{value.name}</span>
+          <span className="type-label block text-clay-700">From the Oceania range</span>
+          <span className="type-h3 mt-2 block text-pine-700">{value.name}</span>
           <span className="type-small mt-1 block text-ink-700">{value.purpose}</span>
         </span>
-        <ArrowRightIcon className="shrink-0 text-forest-800" />
+        <ArrowRightIcon className="shrink-0 text-pine-700" />
       </Link>
     ),
   },

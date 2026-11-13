@@ -30,22 +30,33 @@ export default async function AboutPage() {
         crumbs={[{ label: 'About', href: '/about' }]}
       />
 
-      <section aria-labelledby="purpose-title" className="section-space bg-paper">
+      <section aria-labelledby="purpose-title" className="section-space bg-surface">
         <div className="container-site grid-site gap-y-8">
           <div className="col-span-12 lg:col-span-4">
-            <h2 id="purpose-title" className="type-h2 text-forest-900">
+            <h2 id="purpose-title" className="type-h2 text-pine-700">
               {about.purpose.headline}
             </h2>
           </div>
-          <RichText value={about.purpose.body} className="type-lead col-span-12 max-w-[34ch] text-ink-700 lg:col-span-7 lg:col-start-6" />
+          <div className="col-span-12 lg:col-span-7 lg:col-start-6">
+            <RichText value={about.purpose.body} className="type-lead max-w-[34ch] text-ink-700" />
+            {about.purpose.statements.length > 0 ? (
+              <ul className="mt-10 border-t border-[color:var(--line-strong)]">
+                {about.purpose.statements.map((statement) => (
+                  <li key={statement} className="type-h3 border-b border-[color:var(--line-strong)] py-5 text-pine-700">
+                    {statement}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
         </div>
       </section>
 
-      <section aria-labelledby="approach-title" className="section-space bg-ivory-50">
+      <section aria-labelledby="approach-title" className="section-space bg-paper">
         <div className="container-site">
           <div className="grid-site gap-y-6">
             <div className="col-span-12 lg:col-span-6">
-              <h2 id="approach-title" className="type-h1 text-forest-900">
+              <h2 id="approach-title" className="type-h1 text-pine-700">
                 {about.approach.headline}
               </h2>
             </div>
@@ -59,8 +70,8 @@ export default async function AboutPage() {
                 style={{ ['--reveal-index' as string]: index }}
                 className="border-b border-[color:var(--line)] py-8 sm:pr-8 lg:border-b-0 lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:pl-8"
               >
-                <p className="type-numeral font-display text-[3rem] leading-none text-gold-500">{index + 1}</p>
-                <h3 className="type-h3 mt-6 text-forest-900">{step.title}</h3>
+                <p className="type-numeral font-display text-[3rem] leading-none text-clay-600">{index + 1}</p>
+                <h3 className="type-h3 mt-6 text-pine-700">{step.title}</h3>
                 <p className="mt-3 text-ink-700">{step.body}</p>
               </li>
             ))}
@@ -68,7 +79,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section aria-labelledby="principles-title" className="on-dark section-space bg-botanical-950 text-ivory-50">
+      <section aria-labelledby="principles-title" className="on-dark section-space bg-pine-900 text-paper">
         <div className="container-site grid-site gap-y-12">
           <div className="col-span-12 lg:col-span-4">
             <h2 id="principles-title" className="type-h2">
@@ -79,7 +90,7 @@ export default async function AboutPage() {
             {about.principles.items.map((item) => (
               <div key={item.title} className="grid gap-3 border-t border-[color:var(--line-on-dark)] py-7 sm:grid-cols-[minmax(0,16rem)_1fr] sm:gap-10">
                 <dt className="font-display text-[1.375rem] leading-snug font-bold">{item.title}</dt>
-                <dd className="text-sage-200">{item.body}</dd>
+                <dd className="text-pine-100">{item.body}</dd>
               </div>
             ))}
           </dl>
@@ -87,10 +98,10 @@ export default async function AboutPage() {
       </section>
 
       {about.story ? (
-        <section aria-labelledby="story-title" className="section-space bg-ivory-50">
+        <section aria-labelledby="story-title" className="section-space bg-paper">
           <div className="container-site grid-site gap-y-10">
             <div className="col-span-12 lg:col-span-5">
-              <h2 id="story-title" className="type-h2 text-forest-900">
+              <h2 id="story-title" className="type-h2 text-pine-700">
                 {about.story.headline}
               </h2>
               <RichText value={about.story.body} className="type-body-lg mt-8 text-ink-700" />
@@ -103,9 +114,9 @@ export default async function AboutPage() {
       ) : null}
 
       {about.leadership.length > 0 ? (
-        <section aria-labelledby="leadership-title" className="section-space bg-paper">
+        <section aria-labelledby="leadership-title" className="section-space bg-surface">
           <div className="container-site">
-            <h2 id="leadership-title" className="type-h2 mb-14 text-forest-900">
+            <h2 id="leadership-title" className="type-h2 mb-14 text-pine-700">
               The people behind Oceania
             </h2>
             <LeadershipGrid members={about.leadership} />
@@ -113,17 +124,17 @@ export default async function AboutPage() {
         </section>
       ) : null}
 
-      <section aria-labelledby="vision-title" className="section-space bg-ivory-100">
+      <section aria-labelledby="vision-title" className="section-space bg-paper-deep">
         <div className="container-site grid-site items-center gap-y-12">
           <Figure image={about.vision.image} aspect="3 / 2" sizes="(min-width: 1024px) 50vw, 100vw" figureClassName="col-span-12 lg:col-span-6" />
           <div className="col-span-12 lg:col-span-5 lg:col-start-8">
-            <h2 id="vision-title" className="type-h2 text-forest-900">
+            <h2 id="vision-title" className="type-h2 text-pine-700">
               {about.vision.headline}
             </h2>
             <p className="type-lead mt-8 text-ink-700">{about.vision.body}</p>
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
               <ButtonLink href="/products">See the products</ButtonLink>
-              <TextLink href="/become-a-partner" className="text-forest-800">
+              <TextLink href="/become-a-partner" className="text-pine-700">
                 Partner with us
               </TextLink>
             </div>

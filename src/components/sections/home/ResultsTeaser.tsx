@@ -8,18 +8,18 @@ import type { DemoPlot, HomePage } from '@/content/types';
 export function ResultsTeaser({ section, plots }: { section: HomePage['results']; plots: DemoPlot[] }) {
   if (plots.length === 0) return null;
   return (
-    <section aria-labelledby="results-teaser-title" className="section-space render-later bg-paper">
+    <section aria-labelledby="results-teaser-title" className="section-space render-later bg-surface">
       <div className="container-site">
         <div className="grid-site items-end gap-y-6">
           <div className="col-span-12 lg:col-span-7" data-reveal="rise">
             <Eyebrow>{section.eyebrow}</Eyebrow>
-            <h2 id="results-teaser-title" className="type-h1 mt-6 text-forest-900">
+            <h2 id="results-teaser-title" className="type-h1 mt-6 text-pine-700">
               <Lines text={section.headline} />
             </h2>
           </div>
           <div className="col-span-12 lg:col-span-4 lg:col-start-9">
             <p className="text-ink-700">{section.intro}</p>
-            <TextLink href="/demo-plots" className="mt-5 text-forest-800">
+            <TextLink href="/field-visits" className="mt-5 text-pine-700">
               All field results
             </TextLink>
           </div>
